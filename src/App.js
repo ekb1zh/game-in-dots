@@ -1,12 +1,13 @@
 import React from 'react';
 import 'normalize.css';
 import './App.scss';
+import Controls from './components/game/controls';
 
 function App() {
   return (
     <>
       <div className="container">
-        Content 1
+        <Controls />
       </div>
       <div className="container">
         Content 2
