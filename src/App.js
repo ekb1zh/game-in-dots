@@ -1,14 +1,15 @@
 import React from 'react';
+import 'normalize.css';
 import './App.scss';
 
 function App() {
   return (
     <>
       <div className="container">
-        awdawda 1
+        Content 1
       </div>
       <div className="container">
-        awdawdaw 2
+        Content 2
       </div>
     </>
   );
