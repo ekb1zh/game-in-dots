@@ -31,8 +31,8 @@ function PlayButton() {
 
   }
 
-  const isDisabled = state.currentDifficulty === START_GAME_MODE ||
-    !state.playerName;
+  const isDisabled = !state.playerName ||
+    state.currentDifficulty === START_GAME_MODE;
 
   return (
     <button

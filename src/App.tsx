@@ -8,6 +8,7 @@ import { actions } from './redux/store';
 import Select from "./components/game/Select";
 import PlayButton from './components/game/PlayButton';
 import TextField from './components/game/TextField';
+import Message from './components/game/Message';
 import { fetchWrapper } from './helpers';
 import * as T from './types';
 
@@ -35,6 +36,7 @@ function App() {
         <Select />
         <TextField />
         <PlayButton />
+        <Message />
       </div>
       <div className="container">
         Content 2
