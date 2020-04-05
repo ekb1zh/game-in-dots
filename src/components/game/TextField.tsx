@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { actions } from '../../redux/store';
+import { actions } from '../../redux';
 import * as T from "../../types";
 
 

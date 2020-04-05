@@ -1,10 +1,10 @@
 import React from 'react';
 import { AnyAction } from 'redux';
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ThunkAction } from 'redux-thunk';
 import 'normalize.css';
 import './App.scss';
-import { actions } from './redux/store';
+import { actions } from './redux';
 import Select from "./components/game/Select";
 import PlayButton from './components/game/PlayButton';
 import TextField from './components/game/TextField';
@@ -19,27 +19,33 @@ const GAME_SETTINGS_URL = 'https://starnavi-frontend-test-task.herokuapp.com/gam
 
 function App() {
 
-  type AsyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
-  const asyncAction: AsyncAction = (dispatch, getState) =>
-    fetchWrapper(GAME_SETTINGS_URL)
-      .then(res => dispatch({
-        type: actions.SET_DIFFICULTIES,
-        payload: res as any as T.Difficulties,
-      }));
-
-  useDispatch()(asyncAction);
   console.log('render App')
+
+  const state = useSelector<T.State, T.State>(state => state);
+
+  if (!state || !state.difficulties) {
+    type AsyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
+    const asyncAction: AsyncAction =
+      (dispatch, getState) => fetchWrapper(GAME_SETTINGS_URL)
+        .then(res => dispatch({
+          type: actions.SET_DIFFICULTIES,
+          payload: res as any as T.Difficulties,
+        }));
+
+    useDispatch()(asyncAction);
+  }
 
   return (
     <>
-      <div className={'container'}>
+      <div className='container'>
         <Select />
         <TextField />
         <PlayButton />
         <Message />
+        Squares
       </div>
-      <div className="container">
-        Content 2
+      <div className='container'>
+        Results
       </div>
     </>
   );

@@ -10,37 +10,33 @@ function Message() {
   const state = useSelector<T.State, T.State>(state => state);
 
   let message = '';
-  if(state.isPlaying) {
+  if (state.isPlaying) {
     // текущие результаты игры
   } else {
 
-    const isStartGameMode = !state.currentDifficulty || 
+    const isStartGameMode = !state.currentDifficulty ||
       state.currentDifficulty === START_GAME_MODE;
     const isAbsentPlayerName = !state.playerName;
 
-    if(isStartGameMode) {
+    if (isStartGameMode) {
       message += 'pick game mode'
     }
 
-    if(isStartGameMode && isAbsentPlayerName) {
+    if (isStartGameMode && isAbsentPlayerName) {
       message += ' and ';
     }
 
-    if(isAbsentPlayerName) {
+    if (isAbsentPlayerName) {
       message += 'enter your name'
     }
 
-    if(message) {
+    if (message) {
       message = `Please, ${message}.`
     }
-    
+
   }
 
-  return (
-    <p>
-      {message}
-    </p>
-  );
+  return message ? (<p>{message}</p>) : null;
 }
 
 export default Message;

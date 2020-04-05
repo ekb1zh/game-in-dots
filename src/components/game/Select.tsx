@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { START_GAME_MODE } from '../../App';
-import { actions } from '../../redux/store';
+import { actions } from '../../redux';
 import * as T from "../../types";
 
 function Select() {
