@@ -2,8 +2,9 @@ import React from 'react';
 import 'normalize.css';
 import './App.scss';
 import Controls from './components/game/controls';
-import {useDispatch} from "react-redux";
-import {SET_SELECT} from "./redux/store";
+import { useDispatch } from "react-redux";
+import { SET_SELECT } from "./redux/store";
+import { ThunkAction } from 'redux-thunk';
 
 const URL_GAME_SETTINGS = 'https://starnavi-frontend-test-task.herokuapp.com/game-settings';
 
@@ -18,8 +19,7 @@ function fetchWrapper(url, options) {
 
 function App() {
   
-  const dispatch = useDispatch();
-  dispatch((dispatch, getState) => {
+  const action: ThunkAction = (dispatch, getState) => {
     fetchWrapper(URL_GAME_SETTINGS)
       .then(res => dispatch({
           type: SET_SELECT,
@@ -29,7 +29,9 @@ function App() {
           },
         })
       );
-  });
+  };
+
+  useDispatch()(action);
   
   return (
     <>

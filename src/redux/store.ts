@@ -18,8 +18,7 @@ function select(state = {
     currentValue: 'Pick game mode',
   },
   action
-)
-{
+) {
   return action.type === SET_SELECT
     ? action.payload
     : state;
