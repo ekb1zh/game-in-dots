@@ -4,8 +4,15 @@ import { State } from "../../../types";
 
 function Select() {
 
-  const [currentValue, setCurrentValue] = useState('Pick game mode');
+  const startGameMode = 'Pick game mode';
+
+  const [currentValue, setCurrentValue] = useState(startGameMode);
   const state = useSelector<State, State>(state => state);
+
+  const gameModes = [startGameMode];
+  if(state.difficulty) {
+    gameModes.push(...Object.keys(state.difficulty));
+  }
 
   function onChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setCurrentValue(event.target.value);
@@ -13,13 +20,11 @@ function Select() {
 
   return (
     <select value={currentValue} onChange={onChange}>
-      {state.difficulty
-        ? Object.keys(state.difficulty).map(key => (
-          <option value={key}>
-            {key}
-          </option>))
-        : null
-      }
+      {gameModes.map(key => (
+        <option key={key} value={key}>
+          {key}
+        </option>)
+      )}
     </select>
   );
 }
