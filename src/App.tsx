@@ -21,9 +21,10 @@ function App() {
 
   console.log('render App')
 
-  const state = useSelector<T.State, T.State>(state => state);
+  // const state = useSelector<T.State, T.State>(state => state);
+  const dispatch = useDispatch();
 
-  if (!state || !state.difficulties) {
+  // if (!state || !state.difficulties) {
     type AsyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
     const asyncAction: AsyncAction =
       (dispatch, getState) => fetchWrapper(GAME_SETTINGS_URL)
@@ -32,8 +33,8 @@ function App() {
           payload: res as any as T.Difficulties,
         }));
 
-    useDispatch()(asyncAction);
-  }
+    dispatch(asyncAction);
+  // }
 
   return (
     <>

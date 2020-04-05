@@ -18,11 +18,11 @@ function TextField() {
 
   return (
     <input
-      type={'text'}
-      placeholder={'Enter your name'}
+      type='text'
+      placeholder='Enter your name'
       disabled={state.isPlaying}
       onChange={onChange}
-      value={state.playerName}
+      value={state.playerName || ''}
     />
   );
 }
