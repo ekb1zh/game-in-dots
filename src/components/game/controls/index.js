@@ -1,7 +1,8 @@
 import React from "react";
-import ArrowDown from "../../../images/keyboard_arrow_down-black-18dp.svg";
+import Select from "./Select";
+import { useSelector } from 'react-redux';
 
-function Controls(props) {
+function Controls() {
   
   function onSubmit(event) {
     event.preventDefault();
@@ -11,14 +12,7 @@ function Controls(props) {
   return (
     <form onSubmit={onSubmit} className={'container'} >
       
-      <button type={'button'}>
-        <span>Pick game mode</span>
-        <img src={ArrowDown} alt={'ArrowDown'} />
-      </button>
-  
-      <select>
-        <option value=""></option>
-      </select>
+      <Select />
       
       <input type={'text'} placeholder={'Enter your name'} />
   
