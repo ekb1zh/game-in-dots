@@ -21,6 +21,9 @@ function App() {
 
   console.log('render App')
 
+  // !!! По идее, по скольку сюда не приходят ни пропсы
+  // и нет подписки на Redux (через useSelector),
+  // то этот компонент выполниться только один раз !!!
   // const state = useSelector<T.State, T.State>(state => state);
   const dispatch = useDispatch();
 
