@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, Reducer, AnyAction } from "redux";
 import thunk from 'redux-thunk';
-import { State } from "../types";
+import * as T from "../types";
 
 
 // Actions
-export const Actions = Object.freeze({
+export const actions = Object.freeze({
   SET_DIFFICULTIES: 'SET_DIFFICULTIES',
   SET_CURRENT_DIFFICULTY: 'SET_CURRENT_DIFFICULTY',
   SET_PLAYER_NAME: 'SET_PLAYER_NAME',
@@ -16,30 +16,30 @@ export const Actions = Object.freeze({
 
 
 // Reducers
-const reducer: Reducer<State, AnyAction & { payload: any }> =
+const reducer: Reducer<T.State, AnyAction & { payload: any }> =
   (state = {}, action) => {
     console.log({ state, action })
     switch (action.type) {
 
-      case Actions.SET_DIFFICULTIES:
+      case actions.SET_DIFFICULTIES:
         return {
           ...state,
           difficulties: action.payload
         };
 
-      case Actions.SET_IS_PLAYING:
+      case actions.SET_IS_PLAYING:
         return {
           ...state,
           isPlaying: action.payload
         }
 
-      case Actions.SET_CURRENT_DIFFICULTY:
+      case actions.SET_CURRENT_DIFFICULTY:
         return {
           ...state,
           currentDifficulty: action.payload
         };
 
-      case Actions.SET_PLAYER_NAME:
+      case actions.SET_PLAYER_NAME:
         return {
           ...state,
           playerName: action.payload

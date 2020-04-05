@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { START_GAME_MODE } from '../../App';
-import { Actions } from '../../redux/store';
+import { actions } from '../../redux/store';
 import * as T from "../../types";
 
 
@@ -14,18 +14,18 @@ function PlayButton() {
 
     if (state.isPlaying) {
       dispatch({
-        type: Actions.SET_CURRENT_DIFFICULTY,
+        type: actions.SET_CURRENT_DIFFICULTY,
         payload: START_GAME_MODE
       });
 
       dispatch({
-        type: Actions.SET_PLAYER_NAME,
+        type: actions.SET_PLAYER_NAME,
         payload: ''
       });
     }
 
     dispatch({
-      type: Actions.SET_IS_PLAYING,
+      type: actions.SET_IS_PLAYING,
       payload: !state.isPlaying
     });
 
