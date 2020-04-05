@@ -1,29 +1,25 @@
-import React from "react";
-import ArrowDown from "../../../images/keyboard_arrow_down-black-18dp.svg";
-import {useDispatch, useSelector} from "react-redux";
-import {SET_SELECT} from "../../../redux/store";
-
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { State } from "../../../types";
 
 function Select() {
-  
-  const state = useSelector(state => state.select);
-  const dispatch = useDispatch();
-  
-  function onChange(event) {
-    dispatch({
-      type: SET_SELECT,
-      payload: {
-        ...this.state,
-        currentValue: event.target.value
-      }
-    })
+
+  const [currentValue, setCurrentValue] = useState('Pick game mode');
+  const state = useSelector<State, State>(state => state);
+
+  function onChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setCurrentValue(event.target.value);
   }
-  
+
   return (
-    <select value={state.currentValue} onChange={onChange}>
-      {Object.values(state.response).map(([key]) => {
-        return (<option value={key}>{key}</option>);
-      })}
+    <select value={currentValue} onChange={onChange}>
+      {state.difficulty
+        ? Object.keys(state.difficulty).map(key => (
+          <option value={key}>
+            {key}
+          </option>))
+        : null
+      }
     </select>
   );
 }

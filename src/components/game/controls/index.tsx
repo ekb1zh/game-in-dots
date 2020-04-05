@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 function Controls() {
   
-  function onSubmit(event) {
+  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     console.log('form');
   }
