@@ -6,9 +6,10 @@ import * as T from "../../types";
 
 function TextField() {
 
-  const state = useSelector<T.State, T.State>(state => state);
   const dispatch = useDispatch();
-
+  const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
+  const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
+  
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({
       type: actions.SET_PLAYER_NAME,
@@ -20,9 +21,9 @@ function TextField() {
     <input
       type='text'
       placeholder='Enter your name'
-      disabled={state.isPlaying}
+      disabled={isPlaying}
       onChange={onChange}
-      value={state.playerName || ''}
+      value={playerName || ''}
     />
   );
 }

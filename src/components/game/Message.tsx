@@ -4,19 +4,20 @@ import * as T from "../../types";
 import { START_GAME_MODE } from '../../App';
 
 
-
 function Message() {
 
-  const state = useSelector<T.State, T.State>(state => state);
+  const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
+  const currentDifficulty = useSelector<T.State, T.State['currentDifficulty']>(state => state.currentDifficulty);
+  const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
 
   let message = '';
-  if (state.isPlaying) {
+
+  if (isPlaying) {
     // текущие результаты игры
   } else {
 
-    const isStartGameMode = !state.currentDifficulty ||
-      state.currentDifficulty === START_GAME_MODE;
-    const isAbsentPlayerName = !state.playerName;
+    const isStartGameMode = !currentDifficulty || currentDifficulty === START_GAME_MODE;
+    const isAbsentPlayerName = !playerName;
 
     if (isStartGameMode) {
       message += 'pick game mode'

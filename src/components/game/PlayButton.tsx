@@ -7,12 +7,15 @@ import * as T from "../../types";
 
 function PlayButton() {
 
-  const state = useSelector<T.State, T.State>(state => state);
   const dispatch = useDispatch();
+  const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
+  const currentDifficulty = useSelector<T.State, T.State['currentDifficulty']>(state => state.currentDifficulty);
+  const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
+  
 
   function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 
-    if (state.isPlaying) {
+    if (isPlaying) {
       dispatch({
         type: actions.SET_CURRENT_DIFFICULTY,
         payload: START_GAME_MODE
@@ -26,23 +29,21 @@ function PlayButton() {
 
     dispatch({
       type: actions.SET_IS_PLAYING,
-      payload: !state.isPlaying
+      payload: !isPlaying
     });
 
   }
 
-  const isDisabled = !state.playerName ||
-    state.currentDifficulty === START_GAME_MODE;
+  const isDisabled = !playerName || currentDifficulty === START_GAME_MODE;
 
   return (
-    <button
+    <button 
       onClick={onClick}
       disabled={isDisabled}
     >
-      {state.isPlaying ? 'PLAY AGAIN' : 'PLAY'}
+      {isPlaying ? 'PLAY AGAIN' : 'PLAY'}
     </button>
   );
 }
-
 
 export default PlayButton;

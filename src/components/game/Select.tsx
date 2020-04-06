@@ -6,12 +6,14 @@ import * as T from "../../types";
 
 function Select() {
 
-  const state = useSelector<T.State, T.State>(state => state);
   const dispatch = useDispatch();
+  const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
+  const currentDifficulty = useSelector<T.State, T.State['currentDifficulty']>(state => state.currentDifficulty);
+  const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
 
   const gameModes = [START_GAME_MODE];
-  if(state.difficulties) {
-    gameModes.push(...Object.keys(state.difficulties));
+  if(difficulties) {
+    gameModes.push(...Object.keys(difficulties));
   }
 
   function onChange(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -23,9 +25,9 @@ function Select() {
 
   return (
     <select
-      value={state.currentDifficulty || START_GAME_MODE}
+      value={currentDifficulty || START_GAME_MODE}
       onChange={onChange}
-      disabled={state.isPlaying}
+      disabled={isPlaying}
     >
       {gameModes.map(key => (
         <option key={key} value={key}>
