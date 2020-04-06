@@ -5,6 +5,8 @@ import * as T from "../../types";
 
 
 function TextField() {
+  
+  console.log('render TextField')
 
   const dispatch = useDispatch();
   const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);

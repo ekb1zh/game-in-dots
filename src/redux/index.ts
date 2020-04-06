@@ -18,7 +18,9 @@ export const actions = Object.freeze({
 // Reducers
 const reducer: Reducer<T.State, AnyAction & { payload: any }> =
   (state = {}, action) => {
-    console.log({ state, action })
+
+    console.log('reducer', { state, action })
+
     switch (action.type) {
 
       case actions.SET_DIFFICULTIES:
@@ -36,7 +38,7 @@ const reducer: Reducer<T.State, AnyAction & { payload: any }> =
       case actions.SET_CURRENT_DIFFICULTY:
         return {
           ...state,
-          currentDifficulty: action.payload
+          currentMode: action.payload
         };
 
       case actions.SET_PLAYER_NAME:

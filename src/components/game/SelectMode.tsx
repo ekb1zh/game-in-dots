@@ -4,11 +4,13 @@ import { START_GAME_MODE } from '../../App';
 import { actions } from '../../redux';
 import * as T from "../../types";
 
-function Select() {
+function SelectMode() {
+
+  console.log('render Select')
 
   const dispatch = useDispatch();
   const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
-  const currentDifficulty = useSelector<T.State, T.State['currentDifficulty']>(state => state.currentDifficulty);
+  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
 
   const gameModes = [START_GAME_MODE];
@@ -25,7 +27,7 @@ function Select() {
 
   return (
     <select
-      value={currentDifficulty || START_GAME_MODE}
+      value={currentMode || START_GAME_MODE}
       onChange={onChange}
       disabled={isPlaying}
     >
@@ -38,4 +40,4 @@ function Select() {
   );
 }
 
-export default Select;
+export default SelectMode;

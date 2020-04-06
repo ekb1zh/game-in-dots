@@ -5,10 +5,11 @@ import { ThunkAction } from 'redux-thunk';
 import 'normalize.css';
 import './App.scss';
 import { actions } from './redux';
-import Select from "./components/game/Select";
+import SelectMode from "./components/game/SelectMode";
 import PlayButton from './components/game/PlayButton';
 import TextField from './components/game/TextField';
 import Message from './components/game/Message';
+import Grid from './components/game/Grid';
 import { fetchWrapper } from './helpers';
 import * as T from './types';
 
@@ -38,11 +39,11 @@ function App() {
   return (
     <>
       <div className='container'>
-        <Select />
+        <SelectMode />
         <TextField />
         <PlayButton />
         <Message />
-        Squares
+        <Grid />
       </div>
       <div className='container'>
         Results

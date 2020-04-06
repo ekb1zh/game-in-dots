@@ -1,11 +1,13 @@
 // Store
 export type State = Partial<{
   difficulties: Difficulties
-  currentDifficulty: string
+  currentMode: string
   playerName: string
   isPlaying: boolean
+  
+  // Следующие поля не факт что нужны тут?
   message: string
-  squares: Array<Row>
+  squares: Array<Row> // Grid
   winners: Array<Winner>
 }>
 

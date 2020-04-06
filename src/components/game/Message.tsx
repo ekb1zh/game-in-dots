@@ -6,8 +6,10 @@ import { START_GAME_MODE } from '../../App';
 
 function Message() {
 
+  console.log('render Message')
+
   const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
-  const currentDifficulty = useSelector<T.State, T.State['currentDifficulty']>(state => state.currentDifficulty);
+  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
 
   let message = '';
@@ -16,7 +18,7 @@ function Message() {
     // текущие результаты игры
   } else {
 
-    const isStartGameMode = !currentDifficulty || currentDifficulty === START_GAME_MODE;
+    const isStartGameMode = !currentMode || currentMode === START_GAME_MODE;
     const isAbsentPlayerName = !playerName;
 
     if (isStartGameMode) {

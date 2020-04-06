@@ -7,9 +7,11 @@ import * as T from "../../types";
 
 function PlayButton() {
 
+  console.log('render PlayButton')
+
   const dispatch = useDispatch();
   const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
-  const currentDifficulty = useSelector<T.State, T.State['currentDifficulty']>(state => state.currentDifficulty);
+  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
   
 
@@ -34,7 +36,7 @@ function PlayButton() {
 
   }
 
-  const isDisabled = !playerName || currentDifficulty === START_GAME_MODE;
+  const isDisabled = !playerName || currentMode === START_GAME_MODE;
 
   return (
     <button 
