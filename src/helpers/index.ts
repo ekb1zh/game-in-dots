@@ -10,8 +10,8 @@ export const fetchWrapper: typeof fetch = function (url, options) {
 
 
 export function isEqualsArrays(
-  a: Array<unknown>,
-  b: Array<unknown>
+  a: Array<any>,
+  b: Array<any>
 ): boolean {
 
   // Проверка аргументов

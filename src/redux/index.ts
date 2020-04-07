@@ -4,47 +4,51 @@ import * as T from "../types";
 
 
 // Actions
-export const actions = Object.freeze({
-  SET_DIFFICULTIES: 'SET_DIFFICULTIES',
-  SET_CURRENT_DIFFICULTY: 'SET_CURRENT_DIFFICULTY',
-  SET_PLAYER_NAME: 'SET_PLAYER_NAME',
-  SET_IS_PLAYING: 'SET_IS_PLAYING',
-  SET_MESSAGE: 'SET_MESSAGE',
-  SET_SQUARES: 'SET_SQUARES',
-  SET_WINNERS: 'SET_WINNERS',
-});
+export const enum Actions {
+  SET_DIFFICULTIES        = 'SET_DIFFICULTIES',
+  SET_CURRENT_DIFFICULTY  = 'SET_CURRENT_DIFFICULTY',
+  SET_PLAYER_NAME         = 'SET_PLAYER_NAME',
+  SET_IS_PLAYING          = 'SET_IS_PLAYING',
+  SET_WINNERS             = 'SET_WINNERS',
+};
 
 
-// Reducers
-const reducer: Reducer<T.State, AnyAction & { payload: any }> =
+// Reducer
+const reducer: Reducer<T.State, AnyAction & { payload: any }> = 
   (state = {}, action) => {
 
     console.log('reducer', { state, action })
 
     switch (action.type) {
 
-      case actions.SET_DIFFICULTIES:
+      case Actions.SET_DIFFICULTIES:
         return {
           ...state,
           difficulties: action.payload
         };
 
-      case actions.SET_IS_PLAYING:
+      case Actions.SET_IS_PLAYING:
         return {
           ...state,
           isPlaying: action.payload
         }
 
-      case actions.SET_CURRENT_DIFFICULTY:
+      case Actions.SET_CURRENT_DIFFICULTY:
         return {
           ...state,
           currentMode: action.payload
         };
 
-      case actions.SET_PLAYER_NAME:
+      case Actions.SET_PLAYER_NAME:
         return {
           ...state,
           playerName: action.payload
+        };
+
+      case Actions.SET_WINNERS:
+        return {
+          ...state,
+          winners: action.payload
         };
 
       default:

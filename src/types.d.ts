@@ -4,10 +4,6 @@ export type State = Partial<{
   currentMode: string
   playerName: string
   isPlaying: boolean
-  
-  // Следующие поля не факт что нужны тут?
-  message: string
-  squares: Array<Row> // Grid
   winners: Array<Winner>
 }>
 
@@ -18,15 +14,11 @@ export type Difficulties = {
   }
 }
 
-export type Row = {
-  filled: Array<Color>
-  unfilled: Array<Array<number>>
-}
-
-export type Color = 'white' | 'blue' | 'green' | 'red';
-
 export type Winner = {
-  id: number
   winner: string
   date: string
 }
+
+export type Coordinate = [number, number];
+export type Grid = Array<Array<string>>;
+export type Score = [number, number]; // [player, computer]

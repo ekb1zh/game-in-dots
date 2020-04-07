@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { START_GAME_MODE } from '../../App';
-import { actions } from '../../redux';
+import { Actions } from '../../redux';
 import * as T from "../../types";
 
 function SelectMode() {
@@ -20,7 +20,7 @@ function SelectMode() {
 
   function onChange(event: React.ChangeEvent<HTMLSelectElement>) {
     dispatch({
-      type: actions.SET_CURRENT_DIFFICULTY,
+      type: Actions.SET_CURRENT_DIFFICULTY,
       payload: event.target.value
     });
   }
