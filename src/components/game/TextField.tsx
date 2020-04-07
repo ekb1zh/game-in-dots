@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Actions } from '../../redux';
+import { Action } from '../../redux';
 import * as T from "../../types";
 
 
@@ -14,7 +14,7 @@ function TextField() {
   
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({
-      type: Actions.SET_PLAYER_NAME,
+      type: Action.SET_PLAYER_NAME,
       payload: event.target.value
     });
   }

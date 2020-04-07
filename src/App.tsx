@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { ThunkAction } from 'redux-thunk';
 import 'normalize.css';
 import './App.scss';
-import { Actions } from './redux';
+import { Action } from './redux';
 import SelectMode from "./components/game/SelectMode";
 import PlayButton from './components/game/PlayButton';
 import TextField from './components/game/TextField';
@@ -33,19 +33,19 @@ function App() {
 
       fetchWrapper(GAME_SETTINGS_URL)
         .then(res => dispatch({
-          type: Actions.SET_DIFFICULTIES,
+          type: Action.SET_DIFFICULTIES,
           payload: res,
         }));
 
       fetchWrapper(GAME_WINNERS_URL)
         .then(res => dispatch({
-          type: Actions.SET_WINNERS,
+          type: Action.SET_WINNERS,
           payload: res,
         }));
     }
 
     dispatch(asyncAction);
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

@@ -3,8 +3,8 @@ import thunk from 'redux-thunk';
 import * as T from "../types";
 
 
-// Actions
-export const enum Actions {
+// Action
+export enum Action {
   SET_DIFFICULTIES        = 'SET_DIFFICULTIES',
   SET_CURRENT_DIFFICULTY  = 'SET_CURRENT_DIFFICULTY',
   SET_PLAYER_NAME         = 'SET_PLAYER_NAME',
@@ -21,31 +21,31 @@ const reducer: Reducer<T.State, AnyAction & { payload: any }> =
 
     switch (action.type) {
 
-      case Actions.SET_DIFFICULTIES:
+      case Action.SET_DIFFICULTIES:
         return {
           ...state,
           difficulties: action.payload
         };
 
-      case Actions.SET_IS_PLAYING:
+      case Action.SET_IS_PLAYING:
         return {
           ...state,
           isPlaying: action.payload
         }
 
-      case Actions.SET_CURRENT_DIFFICULTY:
+      case Action.SET_CURRENT_DIFFICULTY:
         return {
           ...state,
           currentMode: action.payload
         };
 
-      case Actions.SET_PLAYER_NAME:
+      case Action.SET_PLAYER_NAME:
         return {
           ...state,
           playerName: action.payload
         };
 
-      case Actions.SET_WINNERS:
+      case Action.SET_WINNERS:
         return {
           ...state,
           winners: action.payload
