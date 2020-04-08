@@ -24,3 +24,11 @@ export type Coordinate = [number, number];
 export type Grid = Array<Array<string | null>>;
 
 export type Score = [number, number]; // [player, computer]
+
+export type Game = {
+  score: Score;
+  timerId: number | null;
+  cell: Coordinate;
+  grid: Grid;
+  unfilledCells: Array<Coordinate>;
+}

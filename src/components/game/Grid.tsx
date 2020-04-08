@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkAction } from 'redux-thunk';
@@ -16,7 +16,8 @@ enum Color {
   RED = 'red',
 };
 
-enum GameEvent {
+enum GameStage {
+  NEW,
   CLICK,
   TIMER,
   WIN
@@ -27,61 +28,101 @@ function Grid() {
 
   console.log('render Grid')
 
-  const dispatch = useDispatch();
 
   // Данные из redux
-  const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
   const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
   const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
+  const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
+  const dispatch = useDispatch();
 
   // Данные из локального стейта
-  const [gameEvent, setGameEvent] = useState<GameEvent | null>(null);
+  const [gameStage, setGameStage] = useState(GameStage.NEW);
 
-  // Данные не вызывающие перерендер
-  const memo = useMemo(newGame, []); // оптимизация, чтобы не создавать лишние объекты с массивами
-  const game = useRef(memo);
+  // Реф для хранения текущих данных
+  const game = useRef() as any as React.MutableRefObject<T.Game>;
+
+  // Если не указаны входные параметры, то сетку не рисовать
+  if (!difficulties || !currentMode) return null;
 
   // Рабочие константы
-  const difficulty = difficulties && currentMode
-    ? difficulties[currentMode]
-    : null;
+  const { field, delay } = difficulties[currentMode];
 
-  // Реакция на изменение
-  useEffect(() => {
-    // unfilledCells = (() => {
-    //   const array: Array<T.Coordinate> = [];
-    //   for (let row = 0; row < field; ++row) {
-    //     for (let col = 0; col < field; ++col) {
-    //       array.push([row, col]);
-    //     }
-    //   }
-    //   return array;
-  }, [])
+  // Управляющая логика
+  if (isPlaying) {
 
+    switch (gameStage) {
 
+      case GameStage.NEW:
+        newGame();
+        selectRandomCell();
+        fillSelectedCell(Color.BLUE);
+        startTimer();
+        break;
 
+      case GameStage.CLICK:
+        clearTimer();
+        playerScoreIncrement();
+        checkWinners();
+        fillSelectedCell(Color.GREEN);
+        selectRandomCell();
+        fillSelectedCell(Color.BLUE);
+        startTimer();
+        break;
 
-  if (!difficulty) return null;
+      case GameStage.TIMER:
+        clearTimer();
+        computerScoreIncrement();
+        checkWinners();
+        fillSelectedCell(Color.RED);
+        selectRandomCell();
+        fillSelectedCell(Color.BLUE);
+        startTimer();
+        break;
 
+      case GameStage.WIN:
+        clearTimer();
+        break;
 
+      default:
+        throw new Error(`Unknown game event: ${gameStage}`);
+    }
 
+  } else {
 
+    if (gameStage !== GameStage.NEW) {
+      setGameStage(GameStage.NEW);
+    }
 
-  // Функция создающая объект для хранения данных как реф
+    if(!game.current) {
+      newGame();
+    }
+  }
+
+  // Функция создающая объект для хранения данных в реф
   function newGame() {
-    return {
-      timerId: null as number | null,
-      grid: [[null]] as T.Grid,
-      cell: [0, 0] as T.Coordinate,
-      score: [0, 0] as T.Score,
-      unfilledCells: [[0, 0]] as Array<T.Coordinate> // !!!!!!!!! должно быть условие которое потом увеличит этот массив
+    game.current = {
+      score: [0, 0],
+      timerId: null,
+      cell: [0, 0],
+      grid: new Array(field)
+        .fill(null)
+        .map(el => new Array(field).fill(null)),
+      unfilledCells: (() => {
+        const array: Array<T.Coordinate> = [];
+        for (let row = 0; row < field; ++row) {
+          for (let col = 0; col < field; ++col) {
+            array.push([row, col]);
+          }
+        }
+        return array;
+      })(),
     };
   }
 
   // Функция таймера
   function timerFn() {
-    setGameEvent(GameEvent.TIMER);
+    setGameStage(GameStage.TIMER);
   }
 
   // Функция для обработки кликов
@@ -96,23 +137,23 @@ function Grid() {
     }
 
     if (isEqualsArrays(currentCell, this)) {
-      setGameEvent(GameEvent.CLICK);
+      setGameStage(GameStage.CLICK);
     }
   }
 
   // Управляющие функции
   function startTimer() {
-    if (difficulty && difficulty.delay) {
-      game.current.timerId = window.setTimeout(timerFn, difficulty.delay);
+    if (delay) {
+      game.current.timerId = window.setTimeout(timerFn, delay);
     }
-    /*DEBUG*/else throw new Error();
+    /*DEBUG*/else console.log('startTimer')
   }
 
   function clearTimer() {
     if (game.current.timerId) {
       window.clearTimeout(game.current.timerId);
     }
-    /*DEBUG*/else throw new Error();
+    /*DEBUG*/else console.log('clearTimer')
     game.current.timerId = null;
   }
 
@@ -130,13 +171,20 @@ function Grid() {
     game.current.grid[row][col] = color;
   }
 
+  function playerScoreIncrement() {
+    ++game.current.score[0];
+  }
+
+  function computerScoreIncrement() {
+    ++game.current.score[1];
+  }
+
   function checkWinners() {
 
     const array = game.current.score;
     const length = array.length;
 
     for (let index = 0; index < length; ++index) {
-      const { field } = difficulty!; // !!!!!!!!!!!!!!!!! выше есть проверка
       const result = array[index];
       const filledPart = result / field * 100;
 
@@ -145,10 +193,10 @@ function Grid() {
       const winner = { date: new Date().toString() } as T.Winner;
       switch (index) {
         case 0:
-          winner.winner = playerName!; // !!!!!!!!!!!!!! тут имя должно быть
+          winner.winner = playerName || '';
           break
         case 1:
-          winner.winner = 'Computer';
+          winner.winner = 'computer';
           break;
         default:
           throw new Error(`Error index: ${index}`);
@@ -176,62 +224,21 @@ function Grid() {
       dispatch(asyncAction);
 
       // Смена события
-      setGameEvent(GameEvent.WIN);
+      setGameStage(GameStage.WIN);
 
       // Выход, возможно до завершения цикла
       return;
     }
   }
 
-
-  // Управляющая логика
-  if (isPlaying) {
-
-    switch (gameEvent) {
-
-      case GameEvent.CLICK:
-        clearTimer();
-        fillSelectedCell(Color.GREEN);
-        selectRandomCell();
-        fillSelectedCell(Color.BLUE);
-        startTimer();
-        break;
-
-      case GameEvent.TIMER:
-        clearTimer();
-        fillSelectedCell(Color.RED);
-        selectRandomCell();
-        fillSelectedCell(Color.BLUE);
-        startTimer();
-        break;
-
-      case GameEvent.WIN:
-        clearTimer();
-        break;
-
-      case null:
-        // ???????????????????????
-        // break;
-        throw new Error();
-
-      default:
-        throw new Error(`Unknown game event: ${gameEvent}`);
-    }
-
-    checkWinners();
-
-  } else {
-    game.current = newGame();
-  }
-
-
-
+  // Render
   return (
     <div>
       {(game.current.grid).map((row, rowIndex) => (
         <div className='row'>
           {row.map((color, colorIndex) => (
             <div
+              key={colorIndex}
               className={color!} // !!!! по идее класс с null просто не отрисуется
               onClick={onClick.bind([rowIndex, colorIndex])}
             />

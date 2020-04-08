@@ -8,10 +8,11 @@ function SelectMode() {
 
   console.log('render Select')
 
-  const dispatch = useDispatch();
   const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
   const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
+  const dispatch = useDispatch();
+  
 
   const gameModes = [START_GAME_MODE];
   if(difficulties) {

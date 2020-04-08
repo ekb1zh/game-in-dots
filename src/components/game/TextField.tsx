@@ -8,9 +8,9 @@ function TextField() {
   
   console.log('render TextField')
 
-  const dispatch = useDispatch();
   const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
+  const dispatch = useDispatch();
   
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({
