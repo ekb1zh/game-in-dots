@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { AnyAction } from 'redux';
 import { useDispatch } from "react-redux";
 import { ThunkAction } from 'redux-thunk';
-import 'normalize.css';
-import './App.scss';
 import { Action } from './redux';
 import SelectMode from "./components/game/SelectMode";
 import PlayButton from './components/game/PlayButton';
@@ -17,7 +15,6 @@ import * as T from './types';
 export const START_GAME_MODE = 'Pick game mode';
 export const GAME_SETTINGS_URL = 'https://starnavi-frontend-test-task.herokuapp.com/game-settings';
 export const GAME_WINNERS_URL = 'https://starnavi-frontend-test-task.herokuapp.com/winners';
-
 
 
 function App() {
@@ -49,14 +46,16 @@ function App() {
 
   return (
     <>
-      <div className='container'>
-        <SelectMode />
-        <TextField />
-        <PlayButton />
+      <div className='container game'>
+        <div className='container'>
+          <SelectMode />
+          <TextField />
+          <PlayButton />
+        </div>
         <Message />
         <Grid />
       </div>
-      <div className='container'>
+      <div className='container results'>
         Results
       </div>
     </>

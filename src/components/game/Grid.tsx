@@ -11,6 +11,7 @@ import { GAME_WINNERS_URL } from '../../App';
 
 
 enum Color {
+  DEFAULT = 'transparent',
   BLUE = 'blue',
   GREEN = 'green',
   RED = 'red',
@@ -94,7 +95,7 @@ function Grid() {
       setGameStage(GameStage.NEW);
     }
 
-    if(!game.current) {
+    if (!game.current) {
       newGame();
     }
   }
@@ -107,7 +108,7 @@ function Grid() {
       cell: [0, 0],
       grid: new Array(field)
         .fill(null)
-        .map(el => new Array(field).fill(null)),
+        .map(el => new Array(field).fill(Color.DEFAULT)),
       unfilledCells: (() => {
         const array: Array<T.Coordinate> = [];
         for (let row = 0; row < field; ++row) {
@@ -232,15 +233,29 @@ function Grid() {
   }
 
   // Render
+  const size = `${100 / field}%`;
   return (
-    <div>
+    <div className='grid'>
       {(game.current.grid).map((row, rowIndex) => (
-        <div className='row'>
+        <div
+          key={rowIndex}
+          className='container'
+          style={{
+            height: size,
+            width: '100%',
+            border: 'solid whitesmoke 1px'
+          }}
+        >
           {row.map((color, colorIndex) => (
             <div
               key={colorIndex}
-              className={color!} // !!!! по идее класс с null просто не отрисуется
               onClick={onClick.bind([rowIndex, colorIndex])}
+              style={{
+                height: '100%',
+                width: size,
+                backgroundColor: color,
+                border: 'solid whitesmoke 1px'
+              }}
             />
           ))}
         </div>

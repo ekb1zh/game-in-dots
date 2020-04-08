@@ -12,7 +12,6 @@ function SelectMode() {
   const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
   const dispatch = useDispatch();
-  
 
   const gameModes = [START_GAME_MODE];
   if(difficulties) {

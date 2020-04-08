@@ -13,10 +13,10 @@ function PlayButton() {
   const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
   const dispatch = useDispatch();
-  
 
   function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 
+    // Очистка данных
     if (isPlaying) {
       dispatch({
         type: Action.SET_CURRENT_DIFFICULTY,
@@ -29,6 +29,7 @@ function PlayButton() {
       });
     }
 
+    // Смена флага
     dispatch({
       type: Action.SET_IS_PLAYING,
       payload: !isPlaying
