@@ -19,7 +19,7 @@ function PlayButton() {
     // Очистка данных
     if (isPlaying) {
       dispatch({
-        type: Action.SET_CURRENT_DIFFICULTY,
+        type: Action.SET_CURRENT_MODE,
         payload: START_GAME_MODE
       });
 

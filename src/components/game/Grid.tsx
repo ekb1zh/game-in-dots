@@ -31,8 +31,8 @@ function Grid() {
 
 
   // Данные из redux
-  const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
-  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
+  const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties)!;
+  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode)!;
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
   const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
   const dispatch = useDispatch();
@@ -42,9 +42,6 @@ function Grid() {
 
   // Реф для хранения текущих данных
   const game = useRef() as any as React.MutableRefObject<T.Game>;
-
-  // Если не указаны входные параметры, то сетку не рисовать
-  if (!difficulties || !currentMode) return null;
 
   // Рабочие константы
   const { field, delay } = difficulties[currentMode];

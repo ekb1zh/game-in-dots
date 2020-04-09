@@ -20,7 +20,7 @@ function SelectMode() {
 
   function onChange(event: React.ChangeEvent<HTMLSelectElement>) {
     dispatch({
-      type: Action.SET_CURRENT_DIFFICULTY,
+      type: Action.SET_CURRENT_MODE,
       payload: event.target.value
     });
   }

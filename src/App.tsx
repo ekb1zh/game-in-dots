@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AnyAction } from 'redux';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import { ThunkAction } from 'redux-thunk';
 import { Action } from './redux';
 import SelectMode from "./components/game/SelectMode";
@@ -21,6 +21,8 @@ function App() {
 
   console.log('render App')
 
+  const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
+  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -53,7 +55,7 @@ function App() {
           <PlayButton />
         </div>
         <Message />
-        <Grid />
+        {difficulties && currentMode && <Grid />}
       </div>
       <div className='container results'>
         Results

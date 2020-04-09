@@ -5,11 +5,11 @@ import * as T from "../types";
 
 // Action
 export enum Action {
-  SET_DIFFICULTIES        = 'SET_DIFFICULTIES',
-  SET_CURRENT_DIFFICULTY  = 'SET_CURRENT_DIFFICULTY',
-  SET_PLAYER_NAME         = 'SET_PLAYER_NAME',
-  SET_IS_PLAYING          = 'SET_IS_PLAYING',
-  SET_WINNERS             = 'SET_WINNERS',
+  SET_DIFFICULTIES  = 'SET_DIFFICULTIES',
+  SET_CURRENT_MODE  = 'SET_CURRENT_MODE',
+  SET_PLAYER_NAME   = 'SET_PLAYER_NAME',
+  SET_IS_PLAYING    = 'SET_IS_PLAYING',
+  SET_WINNERS       = 'SET_WINNERS',
 };
 
 
@@ -33,7 +33,7 @@ const reducer: Reducer<T.State, AnyAction & { payload: any }> =
           isPlaying: action.payload
         }
 
-      case Action.SET_CURRENT_DIFFICULTY:
+      case Action.SET_CURRENT_MODE:
         return {
           ...state,
           currentMode: action.payload
