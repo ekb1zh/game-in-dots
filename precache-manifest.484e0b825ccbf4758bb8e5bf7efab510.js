@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c264a2e9f1db398a4589aeadccce1b7e",
+    "revision": "fff3c2f7305ef1ae264baaa57729b1ab",
     "url": "/game-in-dots/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/game-in-dots/static/css/2.764ccc25.chunk.css"
   },
   {
-    "revision": "9f0c8e7b3fd52b62ecfc",
-    "url": "/game-in-dots/static/css/main.07dc8d45.chunk.css"
+    "revision": "144d654dcb0608673f2e",
+    "url": "/game-in-dots/static/css/main.3164b84d.chunk.css"
   },
   {
     "revision": "7a76c268087223982b3b",
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/game-in-dots/static/js/2.287f4bd2.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "9f0c8e7b3fd52b62ecfc",
+    "revision": "144d654dcb0608673f2e",
     "url": "/game-in-dots/static/js/main.88daf2ae.chunk.js"
   },
   {
