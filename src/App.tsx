@@ -4,14 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ThunkAction } from 'redux-thunk';
 import { Action } from './common/redux';
 import SelectMode from "./common/components/SelectMode";
-import PlayButton from './common/components/PlayButton';
+import Button from './common/components/Button';
 import TextField from './common/components/TextField';
 import Message from './common/components/Message';
 import Grid from './common/components/Grid';
+import GridClass from './common/components/GridClass';
 import Winners from './common/components/Winners'
 import { fetchWrapper } from './common/helpers';
 import * as T from './common/types';
-import { GAME_SETTINGS_URL, GAME_WINNERS_URL } from './common'
+import { GAME_SETTINGS_URL, GAME_WINNERS_URL } from './common';
 
 
 
@@ -40,7 +41,7 @@ function App() {
     }
 
     dispatch(asyncAction);
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
@@ -48,10 +49,11 @@ function App() {
         <div className='container'>
           <SelectMode />
           <TextField />
-          <PlayButton />
+          <Button />
         </div>
         <Message />
-        {difficulties && currentMode && <Grid />}
+        {difficulties && currentMode && <GridClass />}
+        {/* {difficulties && currentMode && <Grid />} */}
       </div>
       <div className='container results'>
         <Winners />

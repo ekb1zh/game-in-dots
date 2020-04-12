@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkAction } from 'redux-thunk';
@@ -6,6 +6,15 @@ import { Action } from '../redux';
 import * as T from "../types";
 import { fetchWrapper, getRandomBetween } from '../helpers';
 import { GAME_WINNERS_URL, GameStage, Color } from '../index';
+
+
+/*
+  Ошибки:
+    1. Бросаются ошибки при очистке таймеров - это и есть проблемы в общей логике программы!!
+    2. При первом таймауте не происходит перехода к след ячейфке,
+    в т.ч. заливки текущей и переход к новой.
+    3. (Только в функциональном компоненте) При достижении лимита не происходит остановки таймеров.
+*/
 
 
 
@@ -22,18 +31,19 @@ function Grid() {
   // Реф для хранения текущих данных без перерендеров
   const game = useRef() as any as React.MutableRefObject<T.Game>;
 
+  // Отписка от таймера
+  useEffect(() => clearTimer, []);
+
   // Обязательные данные
   if (!difficulties || !currentMode) {
     return null;
   }
   const { field, delay } = difficulties[currentMode];
 
-  // debugger
-
-  // Управляющая логика (остальное в обработчиках)
+  // Управляющая логика + остальное в обработчиках
   switch (stage) {
     case GameStage.SETTING:
-      clearTimer();
+      // clearTimer();
       newGame();
       break;
     case GameStage.PLAYING:
@@ -45,7 +55,7 @@ function Grid() {
       }
       break;
     case GameStage.WIN:
-      clearTimer();
+      // clearTimer();
       break;
     default:
       throw new Error();
@@ -63,16 +73,15 @@ function Grid() {
 
   // Функция таймера
   function timer() {
-
-    debugger
-    console.log('timer before')
+    // debugger
+    console.log('timer before', game.current.timerId)
 
     // Фиксация текущих результатов
     clearTimer();
     computerScoreIncrement(); // вызовет перерендер
     fillSelectedCell(Color.RED);
 
-    console.log('timer after')
+    console.log('timer after', game.current.timerId)
 
     // Если победителя пока нет, то игра продолжается
     if (!hasWinner()) {
@@ -80,12 +89,12 @@ function Grid() {
       fillSelectedCell(Color.BLUE);
       startTimer();
     }
-    debugger
+    // debugger
   }
 
   // Функция для обработки кликов
   function onClick(
-    this: T.Coordinate,
+    // this: T.Coordinate,
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) {
 
@@ -113,52 +122,23 @@ function Grid() {
 
 
   function startTimer() {
-
-    type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
-    const syncAction: SyncAction = (dispatch, getState) => {
-
-      // Проверять чтобы не пропустить существующий таймер
-      if (typeof getState().timerId === 'number') {
+    if (delay) {
+      if (typeof game.current.timerId === 'number') {
         console.error(new Error());
         clearTimer();
       }
-
-      // Запуск нового таймера
-      dispatch({
-        type: Action.SET_TIMER_ID,
-        payload: window.setTimeout(timer, delay),
-      });
+      game.current.timerId = window.setTimeout(timer, delay);
     }
-
-    dispatch(syncAction);
   }
 
   function clearTimer() {
-
-    type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
-    const syncAction: SyncAction = (dispatch, getState) => {
-
-      const { timerId } = getState();
-      if (typeof timerId !== 'number') {
-        console.error(new Error());
-        return;
-      }
-
-      window.clearTimeout(timerId);
-
-      dispatch({
-        type: Action.SET_TIMER_ID,
-        payload: null,
-      });
+    if (typeof game.current.timerId === 'number') {
+      window.clearTimeout(game.current.timerId);
+      game.current.timerId = null;
+      return;
     }
-
-    dispatch(syncAction);    
+    console.error(new Error());
   }
-
-
-
-
-
 
 
 
@@ -169,6 +149,7 @@ function Grid() {
 
   function newGame() {
     game.current = {
+      timerId: null,
       cell: [0, 0],
       grid: new Array(field)
         .fill(null)
@@ -182,7 +163,7 @@ function Grid() {
         }
         return array;
       })(),
-      isStarted: false, ////////// ?????????? 
+      isStarted: false,
     };
   }
 
@@ -232,7 +213,7 @@ function Grid() {
     if (stage === GameStage.WIN) return true;
 
     for (let index = 0, length = score.length; index < length; ++index) {
-      const resultAbsolute = score[index] + 1; // +1 т.к. этот метод вызывается до того как redux сможет выполнить инкремент
+      const resultAbsolute = score[index];
       const resultRelative = resultAbsolute / Math.pow(field, 2) * 100;
 
       if (resultRelative > 50) {
@@ -301,7 +282,8 @@ function Grid() {
           {row.map((color, colorIndex) => (
             <div
               key={colorIndex}
-              onClick={color === Color.BLUE ? onClick.bind([rowIndex, colorIndex]) : null!}
+              onClick={color === Color.BLUE ? onClick : null!}
+              // onClick={color === Color.BLUE ? onClick.bind([rowIndex, colorIndex]) : null!}
               style={{
                 height: '100%',
                 width: size,

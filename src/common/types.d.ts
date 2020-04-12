@@ -5,7 +5,6 @@ export type State = {
   currentMode: string | null
   playerName: string | null
   winners: Array<Winner> | null
-  timerId: number | null
   score: Score
   stage: Stage
 }
@@ -29,6 +28,7 @@ export type Grid = Array<Array<string>>;
 export type Score = [number, number]; // [player, computer]
 
 export type Game = {
+  timerId: number | null
   cell: Coordinate
   grid: Grid
   unfilledCells: Array<Coordinate>
