@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/game-in-dots/static/css/main.07dc8d45.chunk.css",
+    "main.js": "/game-in-dots/static/js/main.88daf2ae.chunk.js",
+    "main.js.map": "/game-in-dots/static/js/main.88daf2ae.chunk.js.map",
+    "runtime-main.js": "/game-in-dots/static/js/runtime-main.6d5097c9.js",
+    "runtime-main.js.map": "/game-in-dots/static/js/runtime-main.6d5097c9.js.map",
+    "static/css/2.764ccc25.chunk.css": "/game-in-dots/static/css/2.764ccc25.chunk.css",
+    "static/js/2.287f4bd2.chunk.js": "/game-in-dots/static/js/2.287f4bd2.chunk.js",
+    "static/js/2.287f4bd2.chunk.js.map": "/game-in-dots/static/js/2.287f4bd2.chunk.js.map",
+    "index.html": "/game-in-dots/index.html",
+    "precache-manifest.418cc0372f84d01e3011163c15ebef56.js": "/game-in-dots/precache-manifest.418cc0372f84d01e3011163c15ebef56.js",
+    "service-worker.js": "/game-in-dots/service-worker.js",
+    "static/css/2.764ccc25.chunk.css.map": "/game-in-dots/static/css/2.764ccc25.chunk.css.map",
+    "static/css/main.07dc8d45.chunk.css.map": "/game-in-dots/static/css/main.07dc8d45.chunk.css.map",
+    "static/js/2.287f4bd2.chunk.js.LICENSE.txt": "/game-in-dots/static/js/2.287f4bd2.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6d5097c9.js",
+    "static/css/2.764ccc25.chunk.css",
+    "static/js/2.287f4bd2.chunk.js",
+    "static/css/main.07dc8d45.chunk.css",
+    "static/js/main.88daf2ae.chunk.js"
+  ]
+}
