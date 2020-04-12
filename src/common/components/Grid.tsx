@@ -15,6 +15,7 @@ type Props = Readonly<{
 
 class Grid extends React.Component<Props> {
 
+  private scoreLocal: T.Score;
   private timerId: number | null;
   private cell: T.Coordinate | null;
   private isStarted: boolean;
@@ -30,6 +31,7 @@ class Grid extends React.Component<Props> {
 
     this.timerId = null;
     this.cell = [0, 0];
+    this.scoreLocal = [0, 0];
     this.isStarted = false;
 
     this.grid = this.newGrid(field);
@@ -41,11 +43,11 @@ class Grid extends React.Component<Props> {
     const { difficulties, currentMode } = newProps.store;
     const { field } = difficulties![currentMode!];
 
-    const isFieldEquals =
+    const isFieldsEquals =
       field === this.props.store.difficulties![this.props.store.currentMode!].field;
 
     // Если размеры сетки изменились, обновить сетку
-    if (!isFieldEquals) {
+    if (!isFieldsEquals) {
       this.grid = this.newGrid(field);
       this.coordinates = this.newCoordinates(field);
     }
@@ -88,19 +90,22 @@ class Grid extends React.Component<Props> {
     // Фиксация текущих результатов
     this.clearTimer();
     this.fillSelectedCell(Color.RED);
+    this.incrementComputerScore(); // изменение локального игрового счёта
 
     // Проверка, есть ли победитель?
-    const winner = this.checkWinner(); // !именно в таком порядке из-за особенности работы функций в таймере
-    this.computerScoreIncrement();
+    const winner = this.checkWinner();
     if (winner) {
-      this.sendResults(winner);
-      this.stageWin();
+      this.sendResultsAndDispatchThem(winner);
+      this.dispatchStageWin();
     } else {
       this.selectRandomCell();
       this.fillSelectedCell(Color.BLUE);
       this.startTimer();
-      this.forceUpdate();
+      // this.forceUpdate();
     }
+
+    // Отправка локального игрового счёта в redux
+    this.dispatchScore();
   }
 
   // Функция для обработки кликов
@@ -108,19 +113,22 @@ class Grid extends React.Component<Props> {
     // Фиксация текущих результатов
     this.clearTimer();
     this.fillSelectedCell(Color.GREEN);
-    this.playerScoreIncrement();
-    
+    this.incrementPlayerScore(); // изменение локального игрового счёта
+
     // Проверка, есть ли победитель?
-    const winner = this.checkWinner(); // !именно в таком порядке из-за особенности работы функций в таймере
+    const winner = this.checkWinner();
     if (winner) {
-      this.sendResults(winner);
-      this.stageWin();
+      this.sendResultsAndDispatchThem(winner);
+      this.dispatchStageWin();
     } else {
       this.selectRandomCell();
       this.fillSelectedCell(Color.BLUE);
       this.startTimer();
-      this.forceUpdate();
+      // this.forceUpdate();
     }
+
+    // Отправка локального игрового счёта в redux
+    this.dispatchScore();
   }
 
   startTimer = () => {
@@ -166,44 +174,32 @@ class Grid extends React.Component<Props> {
     }
   }
 
-  playerScoreIncrement = () => {
-    type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
-    const syncAction: SyncAction = (dispatch, getState) => {
-      const newScore = [...getState().score];
-      ++newScore[0]; // player +1
-      dispatch({
-        type: Action.SET_SCORE,
-        payload: newScore,
-      });
-    }
-
-    this.props.dispatch(syncAction);
+  incrementPlayerScore = () => {
+    ++this.scoreLocal[0]; // player +1
   }
 
-  computerScoreIncrement = () => {
-    type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
-    const syncAction: SyncAction = (dispatch, getState) => {
-      const newScore = [...getState().score];
-      ++newScore[1]; // computer +1
-      dispatch({
-        type: Action.SET_SCORE,
-        payload: newScore,
-      });
-    }
+  incrementComputerScore = () => {
+    ++this.scoreLocal[1]; // computer +1
+  }
 
-    this.props.dispatch(syncAction);
+  dispatchScore = () => {
+    this.props.dispatch({
+      type: Action.SET_SCORE,
+      payload: [...this.scoreLocal],
+    })
   }
 
   // Если победитель есть, то вернуть его объект, в противном случае вернуть null
   checkWinner = () => {
 
-    const { difficulties, currentMode, playerName, stage, score } = this.props.store;
+    const { difficulties, currentMode, playerName, stage } = this.props.store;
     const { field } = difficulties![currentMode!];
 
     if (stage === Stage.WIN) return null;
 
-    for (let index = 0, length = score.length; index < length; ++index) {
-      const resultAbsolute = score[index];
+    const { scoreLocal } = this;
+    for (let index = 0, length = scoreLocal.length; index < length; ++index) {
+      const resultAbsolute = scoreLocal[index];
       const resultRelative = resultAbsolute / Math.pow(field, 2) * 100;
 
       if (resultRelative > 50) {
@@ -227,7 +223,7 @@ class Grid extends React.Component<Props> {
     return null;
   }
 
-  sendResults = (winner: T.Winner) => {
+  sendResultsAndDispatchThem = (winner: T.Winner) => {
 
     // Отправка данных на сервер и обновление рейтинга победителей
     type AsyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
@@ -251,7 +247,7 @@ class Grid extends React.Component<Props> {
     this.props.dispatch(asyncAction);
   }
 
-  stageWin = () => {
+  dispatchStageWin = () => {
     this.props.dispatch({
       type: Action.SET_STAGE,
       payload: Stage.WIN,
