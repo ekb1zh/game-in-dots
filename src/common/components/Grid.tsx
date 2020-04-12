@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkAction } from 'redux-thunk';
@@ -28,6 +28,8 @@ function Grid() {
   }
   const { field, delay } = difficulties[currentMode];
 
+  // debugger
+
   // Управляющая логика (остальное в обработчиках)
   switch (stage) {
     case GameStage.SETTING:
@@ -36,7 +38,9 @@ function Grid() {
       break;
     case GameStage.PLAYING:
       if (!game.current.isStarted) {
-        nextCell();
+        selectRandomCell();
+        fillSelectedCell(Color.BLUE);
+        startTimer();
         game.current.isStarted = true;
       }
       break;
@@ -47,10 +51,124 @@ function Grid() {
       throw new Error();
   }
 
-  // Функция создающая объект для хранения данных в реф
+
+
+
+
+
+
+
+
+
+
+  // Функция таймера
+  function timer() {
+
+    debugger
+    console.log('timer before')
+
+    // Фиксация текущих результатов
+    clearTimer();
+    computerScoreIncrement(); // вызовет перерендер
+    fillSelectedCell(Color.RED);
+
+    console.log('timer after')
+
+    // Если победителя пока нет, то игра продолжается
+    if (!hasWinner()) {
+      selectRandomCell();
+      fillSelectedCell(Color.BLUE);
+      startTimer();
+    }
+    debugger
+  }
+
+  // Функция для обработки кликов
+  function onClick(
+    this: T.Coordinate,
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) {
+
+    // Фиксация текущих результатов
+    clearTimer();
+    playerScoreIncrement(); // вызовет перерендер
+    fillSelectedCell(Color.GREEN);
+
+    // Если победителя пока нет, то игра продолжается
+    if (!hasWinner()) {
+      selectRandomCell();
+      fillSelectedCell(Color.BLUE);
+      startTimer();
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+  function startTimer() {
+
+    type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
+    const syncAction: SyncAction = (dispatch, getState) => {
+
+      // Проверять чтобы не пропустить существующий таймер
+      if (typeof getState().timerId === 'number') {
+        console.error(new Error());
+        clearTimer();
+      }
+
+      // Запуск нового таймера
+      dispatch({
+        type: Action.SET_TIMER_ID,
+        payload: window.setTimeout(timer, delay),
+      });
+    }
+
+    dispatch(syncAction);
+  }
+
+  function clearTimer() {
+
+    type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
+    const syncAction: SyncAction = (dispatch, getState) => {
+
+      const { timerId } = getState();
+      if (typeof timerId !== 'number') {
+        console.error(new Error());
+        return;
+      }
+
+      window.clearTimeout(timerId);
+
+      dispatch({
+        type: Action.SET_TIMER_ID,
+        payload: null,
+      });
+    }
+
+    dispatch(syncAction);    
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
   function newGame() {
     game.current = {
-      timerId: null,
       cell: [0, 0],
       grid: new Array(field)
         .fill(null)
@@ -64,72 +182,14 @@ function Grid() {
         }
         return array;
       })(),
-      isStarted: false,
+      isStarted: false, ////////// ?????????? 
     };
-  }
-
-  // Функция таймера
-  function timerFn() {
-
-    // Фиксация текущих результатов
-    clearTimer();
-    computerScoreIncrement();
-    fillSelectedCell(Color.RED);
-
-    // Если победителя пока нет, то игра продолжается
-    if (!hasWinner()) {
-      nextCell();
-    }
-  }
-
-  // Функция для обработки кликов (всегда для синей ячейки)
-  function onClick(
-    this: T.Coordinate,
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) {
-
-    // Фиксация текущих результатов
-    clearTimer();
-    playerScoreIncrement();
-    fillSelectedCell(Color.GREEN);
-
-    // Если победителя пока нет, то игра продолжается
-    if (!hasWinner()) {
-      nextCell();
-    }
-  }
-
-  // Управляющие функции
-  function nextCell() {
-    selectRandomCell();
-    fillSelectedCell(Color.BLUE);
-    // startTimer();
-  }
-
-  function startTimer() {
-    if (delay) {
-
-      if (game.current.timerId) {
-        clearTimer();
-        console.error(new Error());
-      }
-
-      game.current.timerId = window.setTimeout(timerFn, delay);
-    }
-  }
-
-  function clearTimer() {
-    if (game.current && game.current.timerId) {
-      window.clearTimeout(game.current.timerId);
-      game.current.timerId = null;
-    }
   }
 
   function selectRandomCell() {
     // Выбор случайной ячейки
     const randomIndex = getRandomBetween(0, game.current.unfilledCells.length);
     game.current.cell = game.current.unfilledCells[randomIndex];
-
     // Удаление выбранной ячейки
     game.current.unfilledCells.splice(randomIndex, 1);
   }

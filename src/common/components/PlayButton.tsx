@@ -1,8 +1,12 @@
 import React from 'react';
+import { AnyAction } from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
+import { ThunkAction } from 'redux-thunk';
 import { Action } from '../redux';
 import * as T from "../types";
 import { GameStage } from '../index';
+
+
 
 
 function PlayButton() {
@@ -25,24 +29,52 @@ function PlayButton() {
 
       case GameStage.PLAYING:
       case GameStage.WIN:
+        
         dispatch({
           type: Action.SET_CURRENT_MODE,
           payload: null,
         });
+
         dispatch({
           type: Action.SET_SCORE,
           payload: [0, 0],
         });
+
         dispatch({
           type: Action.SET_STAGE,
           payload: GameStage.SETTING,
         });
+        
+        clearTimer();
+
         break;
 
       default:
         throw new Error();
     }
 
+  }
+
+  function clearTimer() {
+
+    type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
+    const syncAction: SyncAction = (dispatch, getState) => {
+
+      const { timerId } = getState();
+      if (typeof timerId !== 'number') {
+        console.error(new Error());
+        return;
+      }
+
+      window.clearTimeout(timerId);
+
+      dispatch({
+        type: Action.SET_TIMER_ID,
+        payload: null,
+      });
+    }
+
+    dispatch(syncAction);    
   }
 
   const isDisabled = !playerName || !currentMode;

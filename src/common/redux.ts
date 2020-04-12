@@ -12,6 +12,7 @@ export enum Action {
   SET_WINNERS = 'SET_WINNERS',
   SET_SCORE = 'SET_SCORE',
   SET_STAGE = 'SET_STAGE',
+  SET_TIMER_ID = 'SET_TIMER_ID',
 };
 
 // Create default state
@@ -21,6 +22,7 @@ function newState(): T.State {
     currentMode: null,
     playerName: null,
     winners: null,
+    timerId: null,
     score: [0, 0],
     stage: GameStage.SETTING,
   };
@@ -66,6 +68,12 @@ const reducer: Reducer<T.State, AnyAction & { payload: any }> =
         return {
           ...state,
           stage: action.payload
+        };
+
+      case Action.SET_TIMER_ID:
+        return {
+          ...state,
+          timerId: action.payload,
         };
 
       default:

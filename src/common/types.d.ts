@@ -1,12 +1,13 @@
-import { GameStage } from './index'
+import { GameStage as Stage } from './index'
 
 export type State = {
   difficulties: Difficulties | null
   currentMode: string | null
   playerName: string | null
   winners: Array<Winner> | null
+  timerId: number | null
   score: Score
-  stage: GameStage
+  stage: Stage
 }
 
 export type Difficulties = {
@@ -28,7 +29,6 @@ export type Grid = Array<Array<string>>;
 export type Score = [number, number]; // [player, computer]
 
 export type Game = {
-  timerId: number | null
   cell: Coordinate
   grid: Grid
   unfilledCells: Array<Coordinate>
