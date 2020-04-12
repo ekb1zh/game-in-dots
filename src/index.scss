@@ -45,3 +45,13 @@ $border-width: 2px;
   height: 80%;
 }
 
+.winners {
+  flex-direction: column;
+  height: 80%;
+  width: 90%;
+  overflow: auto;
+
+  & > ul > li > span:nth-child(2) {
+    margin-left: auto;
+  }
+}

@@ -1,15 +1,17 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Action } from '../../redux';
-import * as T from "../../types";
+import { Action } from '../redux';
+import * as T from "../types";
+import { GameStage } from '../index';
+
 
 
 function TextField() {
   
-  console.log('render TextField')
+  // console.log('render TextField')
 
-  const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
+  const stage = useSelector<T.State, T.State['stage']>(state => state.stage);
   const dispatch = useDispatch();
   
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -22,10 +24,10 @@ function TextField() {
   return (
     <input
       type='text'
-      placeholder='Enter your name'
-      disabled={isPlaying}
-      onChange={onChange}
       value={playerName || ''}
+      placeholder='Enter your name'
+      onChange={onChange}
+      disabled={stage !== GameStage.SETTING}
     />
   );
 }

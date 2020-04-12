@@ -1,16 +1,20 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { START_GAME_MODE } from '../../App';
-import { Action } from '../../redux';
-import * as T from "../../types";
+import { Action } from '../redux';
+import * as T from "../types";
+import { GameStage } from '../index';
+
+
+const START_GAME_MODE = 'Pick game mode';
+
 
 function SelectMode() {
 
-  console.log('render Select')
+  // console.log('render Select')
 
   const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
   const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
-  const isPlaying = useSelector<T.State, T.State['isPlaying']>(state => state.isPlaying);
+  const stage = useSelector<T.State, T.State['stage']>(state => state.stage);
   const dispatch = useDispatch();
 
   const gameModes = [START_GAME_MODE];
@@ -19,9 +23,10 @@ function SelectMode() {
   }
 
   function onChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const { value } = event.target;
     dispatch({
       type: Action.SET_CURRENT_MODE,
-      payload: event.target.value
+      payload: value === START_GAME_MODE ? null : value,
     });
   }
 
@@ -29,7 +34,7 @@ function SelectMode() {
     <select
       value={currentMode || START_GAME_MODE}
       onChange={onChange}
-      disabled={isPlaying}
+      disabled={stage !== GameStage.SETTING}
     >
       {gameModes.map(key => (
         <option key={key} value={key}>
