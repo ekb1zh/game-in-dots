@@ -8,7 +8,7 @@ export enum Color {
   RED = 'red',
 };
 
-export enum GameStage {
+export enum Stage {
   SETTING,
   PLAYING,
   WIN

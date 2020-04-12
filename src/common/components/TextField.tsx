@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Action } from '../redux';
 import * as T from "../types";
-import { GameStage } from '../index';
+import { Stage } from '../index';
 
 
 
@@ -25,7 +25,7 @@ function TextField() {
       value={playerName || ''}
       placeholder='Enter your name'
       onChange={onChange}
-      disabled={stage !== GameStage.SETTING}
+      disabled={stage !== Stage.SETTING}
     />
   );
 }

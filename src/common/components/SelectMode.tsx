@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Action } from '../redux';
 import * as T from "../types";
-import { GameStage } from '../index';
+import { Stage } from '../index';
 
 
 const START_GAME_MODE = 'Pick game mode';
@@ -32,7 +32,7 @@ function SelectMode() {
     <select
       value={currentMode || START_GAME_MODE}
       onChange={onChange}
-      disabled={stage !== GameStage.SETTING}
+      disabled={stage !== Stage.SETTING}
     >
       {gameModes.map(key => (
         <option key={key} value={key}>

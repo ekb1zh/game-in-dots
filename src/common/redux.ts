@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, Reducer, AnyAction, compose } from "redux";
 import thunk from 'redux-thunk';
 import * as T from "./types";
-import { GameStage } from './index'
+import { Stage } from './index'
 
 
-// Action
+// Actions
 export enum Action {
   SET_DIFFICULTIES = 'SET_DIFFICULTIES',
   SET_CURRENT_MODE = 'SET_CURRENT_MODE',
@@ -22,7 +22,7 @@ function newState(): T.State {
     playerName: null,
     winners: null,
     score: [0, 0],
-    stage: GameStage.SETTING,
+    stage: Stage.SETTING,
   };
 }
 

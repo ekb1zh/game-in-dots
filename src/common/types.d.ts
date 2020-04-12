@@ -1,4 +1,4 @@
-import { GameStage as Stage } from './index'
+import { Stage } from './index'
 
 export type State = {
   difficulties: Difficulties | null

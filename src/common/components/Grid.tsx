@@ -5,18 +5,7 @@ import { ThunkAction } from 'redux-thunk';
 import { Action } from '../redux';
 import * as T from "../types";
 import { fetchWrapper, getRandomBetween } from '../helpers';
-import { GAME_WINNERS_URL, GameStage, Color } from '../index';
-
-
-/*
-  Ошибки:
-    1. При первом таймауте не происходит перехода к след ячейфке,
-    в т.ч. заливки текущей и переход к новой.
-    При этом если хотябы один раз таймер сработал, то при клике пользователя 
-    зальётся две ячейки
-    2. Математика в счёте, у компанормально, у плейера не очень.
-    2. Бросаются ошибки при очистке таймеров - это и есть проблемы в общей логике программы!!
-*/
+import { GAME_WINNERS_URL, Stage, Color } from '../index';
 
 
 type Props = Readonly<{
@@ -30,16 +19,11 @@ class Grid extends React.Component<Props> {
   private cell: T.Coordinate | null;
   private isStarted: boolean;
   private grid: T.Grid;
-  private unfilledCells: Array<T.Coordinate>;
+  private coordinates: Array<T.Coordinate>;
 
   constructor(readonly props: Props) {
 
     super(props);
-
-    this.getNewGrid = this.getNewGrid.bind(this);
-    this.getNewUnfilledCells = this.getNewUnfilledCells.bind(this);
-
-    this.timer = this.timer.bind(this)
 
     const { difficulties, currentMode } = this.props.store;
     const { field } = difficulties![currentMode!];
@@ -48,12 +32,11 @@ class Grid extends React.Component<Props> {
     this.cell = [0, 0];
     this.isStarted = false;
 
-    this.grid = this.getNewGrid(field);
-    this.unfilledCells = this.getNewUnfilledCells(field);
+    this.grid = this.newGrid(field);
+    this.coordinates = this.newCoordinates(field);
   }
 
   shouldComponentUpdate(newProps: Props) {
-    debugger
 
     const { difficulties, currentMode } = newProps.store;
     const { field } = difficulties![currentMode!];
@@ -63,13 +46,13 @@ class Grid extends React.Component<Props> {
 
     // Если размеры сетки изменились, обновить сетку
     if (!isFieldEquals) {
-      this.grid = this.getNewGrid(field);
-      this.unfilledCells = this.getNewUnfilledCells(field);
+      this.grid = this.newGrid(field);
+      this.coordinates = this.newCoordinates(field);
     }
 
     // Первый запуск таймера
     const { stage } = newProps.store;
-    if (!this.isStarted && stage === GameStage.PLAYING) {
+    if (!this.isStarted && stage === Stage.PLAYING) {
       this.selectRandomCell();
       this.fillSelectedCell(Color.BLUE);
       this.startTimer();
@@ -81,18 +64,16 @@ class Grid extends React.Component<Props> {
   }
 
   componentWillUnmount() {
-    // Отписка от таймера
     this.clearTimer();
-    console.log('unmounted')
   }
 
-  getNewGrid = (size: number) => {
+  newGrid = (size: number) => {
     return new Array(size)
       .fill(null)
       .map(el => new Array(size).fill(Color.DEFAULT)) as Array<Array<string>>;
   }
 
-  getNewUnfilledCells = (size: number) => {
+  newCoordinates = (size: number) => {
     const array: Array<T.Coordinate> = [];
     for (let row = 0; row < size; ++row) {
       for (let col = 0; col < size; ++col) {
@@ -102,53 +83,52 @@ class Grid extends React.Component<Props> {
     return array;
   }
 
+  // Функция таймера
   timer = () => {
-    console.log('timer')
-    debugger
-
     // Фиксация текущих результатов
     this.clearTimer();
     this.fillSelectedCell(Color.RED);
-    debugger
 
-    // Если победителя пока нет, то игра продолжается
-    if (!this.hasWinner()) {
+    // Проверка, есть ли победитель?
+    const winner = this.checkWinner(); // !именно в таком порядке из-за особенности работы функций в таймере
+    this.computerScoreIncrement();
+    if (winner) {
+      this.sendResults(winner);
+      this.stageWin();
+    } else {
       this.selectRandomCell();
       this.fillSelectedCell(Color.BLUE);
       this.startTimer();
+      this.forceUpdate();
     }
-
-    // Изменение игрового счёта и перерендер
-    this.computerScoreIncrement();
   }
 
   // Функция для обработки кликов
   onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    debugger
-
     // Фиксация текущих результатов
     this.clearTimer();
     this.fillSelectedCell(Color.GREEN);
-
-    // Если победителя пока нет, то игра продолжается
-    if (!this.hasWinner()) {
+    this.playerScoreIncrement();
+    
+    // Проверка, есть ли победитель?
+    const winner = this.checkWinner(); // !именно в таком порядке из-за особенности работы функций в таймере
+    if (winner) {
+      this.sendResults(winner);
+      this.stageWin();
+    } else {
       this.selectRandomCell();
       this.fillSelectedCell(Color.BLUE);
       this.startTimer();
+      this.forceUpdate();
     }
-
-    // Изменение игрового счёта и перерендер
-    this.playerScoreIncrement();
   }
 
   startTimer = () => {
-    debugger
-
     const { difficulties, currentMode } = this.props.store;
     const { delay } = difficulties![currentMode!];
     if (delay) {
       if (typeof this.timerId === 'number') {
-        console.error(new Error());
+        /*DEBUG*/console.error(new Error());
         this.clearTimer();
       }
       this.timerId = window.setTimeout(this.timer, delay);
@@ -156,46 +136,37 @@ class Grid extends React.Component<Props> {
   }
 
   clearTimer = () => {
-    debugger
-
     if (typeof this.timerId === 'number') {
       window.clearTimeout(this.timerId);
       this.timerId = null;
       return;
     }
-    console.error(new Error());
+    /*DEBUG*///console.error(new Error());
   }
 
   selectRandomCell = () => {
-    debugger
-
     // Если ячейки закончились, то будет null
-    if (!this.unfilledCells.length) {
+    if (!this.coordinates.length) {
       this.cell = null;
     }
 
     // Выбор случайной ячейки
-    const randomIndex = getRandomBetween(0, this.unfilledCells.length);
-    this.cell = this.unfilledCells[randomIndex];
+    const randomIndex = getRandomBetween(0, this.coordinates.length);
+    this.cell = this.coordinates[randomIndex];
 
     // Удаление выбранной ячейки
-    this.unfilledCells.splice(randomIndex, 1);
+    this.coordinates.splice(randomIndex, 1);
   }
 
   fillSelectedCell = (color: Color) => {
-    debugger
-
-    // Если ячейки закончили, то будет null
+    // Если ячейки закончились, то будет null
     if (this.cell) {
       const [row, col] = this.cell;
       this.grid[row][col] = color;
-      console.log(this.grid[row][col], row, col, color)
     }
   }
 
   playerScoreIncrement = () => {
-    debugger
-
     type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
     const syncAction: SyncAction = (dispatch, getState) => {
       const newScore = [...getState().score];
@@ -210,8 +181,6 @@ class Grid extends React.Component<Props> {
   }
 
   computerScoreIncrement = () => {
-    debugger
-
     type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
     const syncAction: SyncAction = (dispatch, getState) => {
       const newScore = [...getState().score];
@@ -225,15 +194,13 @@ class Grid extends React.Component<Props> {
     this.props.dispatch(syncAction);
   }
 
-  hasWinner = () => {
-    debugger
+  // Если победитель есть, то вернуть его объект, в противном случае вернуть null
+  checkWinner = () => {
 
-    const { difficulties, currentMode, playerName, stage } = this.props.store;
+    const { difficulties, currentMode, playerName, stage, score } = this.props.store;
     const { field } = difficulties![currentMode!];
-    const { score } = this.props.store;
-    const { dispatch } = this.props;
 
-    if (stage === GameStage.WIN) return true;
+    if (stage === Stage.WIN) return null;
 
     for (let index = 0, length = score.length; index < length; ++index) {
       const resultAbsolute = score[index];
@@ -253,45 +220,45 @@ class Grid extends React.Component<Props> {
             throw new Error();
         }
 
-        // Отправка данных на сервер и обновление рейтинга победителей
-        type AsyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
-        const asyncAction: AsyncAction = (dispatch, getState) => {
-
-          const params = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(winner),
-          };
-
-          fetchWrapper(GAME_WINNERS_URL, params)
-            .then(res => dispatch({
-              type: Action.SET_WINNERS,
-              payload: res
-            }));
-        }
-
-        dispatch(asyncAction);
-
-        // Смена стадии игры
-        dispatch({
-          type: Action.SET_STAGE,
-          payload: GameStage.WIN,
-        });
-
-        // Выход до завершения цикла
-        return true;
+        return winner;
       }
     }
 
-    return false;
+    return null;
   }
 
+  sendResults = (winner: T.Winner) => {
+
+    // Отправка данных на сервер и обновление рейтинга победителей
+    type AsyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
+    const asyncAction: AsyncAction = (dispatch, getState) => {
+
+      const params = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(winner),
+      };
+
+      fetchWrapper(GAME_WINNERS_URL, params)
+        .then(res => dispatch({
+          type: Action.SET_WINNERS,
+          payload: res
+        }));
+    }
+
+    this.props.dispatch(asyncAction);
+  }
+
+  stageWin = () => {
+    this.props.dispatch({
+      type: Action.SET_STAGE,
+      payload: Stage.WIN,
+    });
+  }
 
   render() {
-    debugger
-
     const { difficulties, currentMode } = this.props.store;
     const { field } = difficulties![currentMode!];
     const size = `${100 / field}%`;
@@ -327,7 +294,6 @@ class Grid extends React.Component<Props> {
     );
   }
 }
-
 
 export default connect(
   state => ({ store: state }),

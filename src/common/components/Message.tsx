@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import * as T from "../types";
-import { GameStage } from '../index';
+import { Stage } from '../index';
 
 
 
@@ -15,7 +15,7 @@ function Message() {
   let message = '';
   switch (stage) {
 
-    case GameStage.SETTING: {
+    case Stage.SETTING: {
       const isStartGameMode = !currentMode;
       const isAbsentPlayerName = !playerName;
 
@@ -38,13 +38,13 @@ function Message() {
       break;
     }
 
-    case GameStage.PLAYING: {
+    case Stage.PLAYING: {
       const [player, computer] = score;
       message = `Score: You ${player} : ${computer} "computer"`
       break;
     }
 
-    case GameStage.WIN: {
+    case Stage.WIN: {
       const [player, computer] = score;
       message = `Game over. Score: ${player} : ${computer}. ${player > computer ? 'You are win!' : 'Computer win.'} Please, play again :-)`
       break;

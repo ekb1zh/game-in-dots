@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Action } from '../redux';
 import * as T from "../types";
-import { GameStage } from '../index';
+import { Stage } from '../index';
 
 
 function Button() {
@@ -16,15 +16,15 @@ function Button() {
 
     switch (stage) {
 
-      case GameStage.SETTING:
+      case Stage.SETTING:
         dispatch({
           type: Action.SET_STAGE,
-          payload: GameStage.PLAYING,
+          payload: Stage.PLAYING,
         });
         break;
 
-      case GameStage.PLAYING:
-      case GameStage.WIN:
+      case Stage.PLAYING:
+      case Stage.WIN:
         dispatch({
           type: Action.SET_CURRENT_MODE,
           payload: null,
@@ -35,7 +35,7 @@ function Button() {
         });
         dispatch({
           type: Action.SET_STAGE,
-          payload: GameStage.SETTING,
+          payload: Stage.SETTING,
         });
         break;
 
@@ -49,11 +49,11 @@ function Button() {
 
   let label;
   switch (stage) {
-    case GameStage.SETTING:
+    case Stage.SETTING:
       label = 'PLAY';
       break;
-    case GameStage.PLAYING:
-    case GameStage.WIN:
+    case Stage.PLAYING:
+    case Stage.WIN:
       label = 'PLAY AGAIN';
       break;
     default:
