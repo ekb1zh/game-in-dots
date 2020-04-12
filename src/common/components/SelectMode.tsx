@@ -30,6 +30,7 @@ function SelectMode() {
 
   return (
     <select
+      className='select'
       value={currentMode || START_GAME_MODE}
       onChange={onChange}
       disabled={stage !== Stage.SETTING}

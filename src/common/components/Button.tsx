@@ -62,6 +62,7 @@ function Button() {
 
   return (
     <button
+      className='button'
       onClick={onClick}
       disabled={isDisabled}
     >

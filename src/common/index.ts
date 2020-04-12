@@ -3,9 +3,9 @@ export const GAME_WINNERS_URL = 'https://starnavi-frontend-test-task.herokuapp.c
 
 export enum Color {
   DEFAULT = 'transparent',
-  BLUE = 'blue',
-  GREEN = 'green',
-  RED = 'red',
+  BLUE = '#42d8e8',
+  GREEN = '#00e871',
+  RED = '#e85a5e',
 };
 
 export enum Stage {

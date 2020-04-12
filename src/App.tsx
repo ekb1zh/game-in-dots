@@ -45,7 +45,7 @@ function App() {
   return (
     <>
       <div className='container game'>
-        <div className='container'>
+        <div className='container controls'>
           <SelectMode />
           <TextField />
           <Button />

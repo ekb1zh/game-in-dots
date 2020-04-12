@@ -13,6 +13,7 @@ function Message() {
   const score = useSelector<T.State, T.State['score']>(state => state.score);
 
   let message = '';
+  let colorClass;
   switch (stage) {
 
     case Stage.SETTING: {
@@ -31,9 +32,15 @@ function Message() {
         message += 'enter your name'
       }
 
-      if (message) {
-        message = `Please, ${message}.`
+      if(!message) {
+        message += 'push PLAY button, and good luck :-)'
       }
+
+      if (message) {
+        message = `Please, ${message}`
+      }
+
+      colorClass = ' message--setting';
 
       break;
     }
@@ -46,7 +53,7 @@ function Message() {
 
     case Stage.WIN: {
       const [player, computer] = score;
-      message = `Game over. Score: ${player} : ${computer}. ${player > computer ? 'You are win!' : 'Computer win.'} Please, play again :-)`
+      message = `Game over. \nScore: ${player} : ${computer}. ${player > computer ? 'You are win!' : 'Computer win.'} \nPlease, play again :-)`
       break;
     }
 
@@ -54,7 +61,11 @@ function Message() {
       throw new Error();
   }
 
-  return message ? (<p>{message}</p>) : null;
+  return message ? (
+    <p className={`message${colorClass ? colorClass : ''}`}>
+      {message}
+    </p>
+  ) : null;
 }
 
 export default Message;

@@ -21,6 +21,7 @@ function TextField() {
 
   return (
     <input
+      className='field'
       type='text'
       value={playerName || ''}
       placeholder='Enter your name'
