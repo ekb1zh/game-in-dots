@@ -52,12 +52,29 @@ $border-width: 2px;
 
 .winners {
   flex-direction: column;
-  height: 80%;
-  width: 90%;
-  overflow: auto;
+  height: 70%;
+  width: 70%;
+  align-items: flex-start;
 
-  & > ul > li > span:nth-child(2) {
-    margin-left: auto;
+  & > h3 {
+    font-size: 1.8rem;
+  }
+
+  & > ul {
+    margin-top: 5%;
+    overflow: auto;
+  }
+
+  & > ul > li {
+    list-style-type: none;
+    justify-content: space-between;
+    background-color: #cfd8dc;
+    margin-bottom: 0.6%;
+    padding: 3% 4%;
+  }
+
+  & > ul > li > span {
+    font-size: 1.2rem;
   }
 }
 
