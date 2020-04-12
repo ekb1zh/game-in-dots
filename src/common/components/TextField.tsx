@@ -7,8 +7,6 @@ import { GameStage } from '../index';
 
 
 function TextField() {
-  
-  // console.log('render TextField')
 
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
   const stage = useSelector<T.State, T.State['stage']>(state => state.stage);

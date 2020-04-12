@@ -30,8 +30,6 @@ function newState(): T.State {
 const reducer: Reducer<T.State, AnyAction & { payload: any }> =
   (state = newState(), action) => {
 
-    // console.log('reducer', { state, action })
-
     switch (action.type) {
 
       case Action.SET_DIFFICULTIES:

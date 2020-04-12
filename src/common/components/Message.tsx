@@ -7,8 +7,6 @@ import { GameStage } from '../index';
 
 function Message() {
 
-  // console.log('render Message')
-
   const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
   const stage = useSelector<T.State, T.State['stage']>(state => state.stage);
@@ -42,13 +40,13 @@ function Message() {
 
     case GameStage.PLAYING: {
       const [player, computer] = score;
-      message = `Score: "${playerName}" ${player} / ${computer} "computer"`
+      message = `Score: You ${player} : ${computer} "computer"`
       break;
     }
 
     case GameStage.WIN: {
       const [player, computer] = score;
-      message = `Game over. Score: ${player} / ${computer}. "${player > computer ? playerName : "Computer"}" win. Please, play again :-)`
+      message = `Game over. Score: ${player} : ${computer}. ${player > computer ? 'You are win!' : 'Computer win.'} Please, play again :-)`
       break;
     }
 

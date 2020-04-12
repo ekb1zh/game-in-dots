@@ -7,35 +7,32 @@ import * as T from "../types";
 import { fetchWrapper, getRandomBetween } from '../helpers';
 import { GAME_WINNERS_URL, GameStage, Color } from '../index';
 
-let ref = null as any;
+
 
 function Grid() {
 
-  // debugger;
-  // console.log('render Grid')
-
   // Данные из redux
-  const state = useSelector<T.State, T.State>(state => state); // нужна ссылка на весь объект
+  const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
+  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
+  const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
+  const stage = useSelector<T.State, T.State['stage']>(state => state.stage);
+  const score = useSelector<T.State, T.State['score']>(state => state.score);
   const dispatch = useDispatch();
 
   // Реф для хранения текущих данных без перерендеров
   const game = useRef() as any as React.MutableRefObject<T.Game>;
 
-  useEffect(() => {
-    console.log({'stage': state.stage})
-  }, [state.stage])
-
   // Обязательные данные
-  if (!state.difficulties || !state.currentMode) {
+  if (!difficulties || !currentMode) {
     return null;
   }
+  const { field, delay } = difficulties[currentMode];
 
   // Управляющая логика (остальное в обработчиках)
-  switch (state.stage) {
+  switch (stage) {
     case GameStage.SETTING:
       clearTimer();
       newGame();
-      console.log({ 'game.current': game.current })
       break;
     case GameStage.PLAYING:
       if (!game.current.isStarted) {
@@ -50,14 +47,8 @@ function Grid() {
       throw new Error();
   }
 
-  console.log(ref === game);
-  ref = game
-
-
   // Функция создающая объект для хранения данных в реф
   function newGame() {
-    console.log('newGame')
-    const field = state.difficulties![state.currentMode!].field; // проверка есть выше
     game.current = {
       timerId: null,
       cell: [0, 0],
@@ -80,14 +71,10 @@ function Grid() {
   // Функция таймера
   function timerFn() {
 
-    console.log('timerId', game.current.timerId)
-
     // Фиксация текущих результатов
     clearTimer();
     computerScoreIncrement();
     fillSelectedCell(Color.RED);
-
-    console.log('timerFn', { score: state.score })
 
     // Если победителя пока нет, то игра продолжается
     if (!hasWinner()) {
@@ -120,12 +107,11 @@ function Grid() {
   }
 
   function startTimer() {
-    const delay = state.difficulties![state.currentMode!].delay; // проверка есть выше
     if (delay) {
 
       if (game.current.timerId) {
         clearTimer();
-        console.log('Внеочередная ошибка таймера')
+        console.error(new Error());
       }
 
       game.current.timerId = window.setTimeout(timerFn, delay);
@@ -158,7 +144,6 @@ function Grid() {
     const syncAction: SyncAction = (dispatch, getState) => {
       const newScore = [...getState().score];
       ++newScore[0]; // player +1
-      console.log('newScore[0]', newScore[0])
       dispatch({
         type: Action.SET_SCORE,
         payload: newScore,
@@ -173,7 +158,6 @@ function Grid() {
     const syncAction: SyncAction = (dispatch, getState) => {
       const newScore = [...getState().score];
       ++newScore[1]; // computer +1
-      console.log('newScore[1]', newScore[1])
       dispatch({
         type: Action.SET_SCORE,
         payload: newScore,
@@ -185,15 +169,11 @@ function Grid() {
 
   function hasWinner() {
 
-    if (state.stage === GameStage.WIN) return true;
-
-    const { difficulties, currentMode, playerName, score } = state;
-    const { field } = difficulties![currentMode!];
+    if (stage === GameStage.WIN) return true;
 
     for (let index = 0, length = score.length; index < length; ++index) {
-      const resultAbsolute = score[index] + 1; // +1 т.к. этот метод вызывается до того как redux смоежт выполнить инкремент
+      const resultAbsolute = score[index] + 1; // +1 т.к. этот метод вызывается до того как redux сможет выполнить инкремент
       const resultRelative = resultAbsolute / Math.pow(field, 2) * 100;
-      console.log({ index, field, resultAbsolute, resultRelative })
 
       if (resultRelative > 50) {
 
@@ -245,7 +225,7 @@ function Grid() {
   }
 
   // Render
-  const size = `${100 / state.difficulties![state.currentMode!].field}%`; // проверка есть выше
+  const size = `${100 / field}%`;
   return (
     <div className='grid'>
       {(game.current.grid).map((row, rowIndex) => (

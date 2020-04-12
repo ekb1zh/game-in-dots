@@ -7,8 +7,6 @@ import { GameStage } from '../index';
 
 function PlayButton() {
 
-  // console.log('render PlayButton')
-
   const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
   const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
   const stage = useSelector<T.State, T.State['stage']>(state => state.stage);
@@ -29,11 +27,7 @@ function PlayButton() {
       case GameStage.WIN:
         dispatch({
           type: Action.SET_CURRENT_MODE,
-          payload: null
-        });
-        dispatch({
-          type: Action.SET_PLAYER_NAME,
-          payload: null
+          payload: null,
         });
         dispatch({
           type: Action.SET_SCORE,
