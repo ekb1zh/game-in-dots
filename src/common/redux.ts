@@ -1,5 +1,6 @@
-import { createStore, applyMiddleware, Reducer, AnyAction, compose } from "redux";
+import { createStore, applyMiddleware, Reducer, AnyAction } from "redux";
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import * as T from "./types";
 import { Stage } from './index'
 
@@ -77,8 +78,7 @@ const reducer: Reducer<T.State, AnyAction & { payload: any }> =
 // Store
 export default createStore(
   reducer,
-  compose(
+  composeWithDevTools(
     applyMiddleware(thunk),
-    (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
