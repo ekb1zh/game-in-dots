@@ -12,6 +12,9 @@ import { GAME_WINNERS_URL, GameStage, Color } from '../index';
   Ошибки:
     1. При первом таймауте не происходит перехода к след ячейфке,
     в т.ч. заливки текущей и переход к новой.
+    При этом если хотябы один раз таймер сработал, то при клике пользователя 
+    зальётся две ячейки
+    2. Математика в счёте, у компанормально, у плейера не очень.
     2. Бросаются ошибки при очистке таймеров - это и есть проблемы в общей логике программы!!
 */
 
@@ -24,8 +27,8 @@ type Props = Readonly<{
 class Grid extends React.Component<Props> {
 
   private timerId: number | null;
-  private cell: T.Coordinate;
-  private isStarted: boolean; //////////////// ????????????????????????????
+  private cell: T.Coordinate | null;
+  private isStarted: boolean;
   private grid: T.Grid;
   private unfilledCells: Array<T.Coordinate>;
 
@@ -36,6 +39,8 @@ class Grid extends React.Component<Props> {
     this.getNewGrid = this.getNewGrid.bind(this);
     this.getNewUnfilledCells = this.getNewUnfilledCells.bind(this);
 
+    this.timer = this.timer.bind(this)
+
     const { difficulties, currentMode } = this.props.store;
     const { field } = difficulties![currentMode!];
 
@@ -45,11 +50,10 @@ class Grid extends React.Component<Props> {
 
     this.grid = this.getNewGrid(field);
     this.unfilledCells = this.getNewUnfilledCells(field);
-
-    console.log('constructor')
   }
 
   shouldComponentUpdate(newProps: Props) {
+    debugger
 
     const { difficulties, currentMode } = newProps.store;
     const { field } = difficulties![currentMode!];
@@ -63,6 +67,15 @@ class Grid extends React.Component<Props> {
       this.unfilledCells = this.getNewUnfilledCells(field);
     }
 
+    // Первый запуск таймера
+    const { stage } = newProps.store;
+    if (!this.isStarted && stage === GameStage.PLAYING) {
+      this.selectRandomCell();
+      this.fillSelectedCell(Color.BLUE);
+      this.startTimer();
+      this.isStarted = true;
+    }
+
     // Всегда true
     return true;
   }
@@ -70,12 +83,13 @@ class Grid extends React.Component<Props> {
   componentWillUnmount() {
     // Отписка от таймера
     this.clearTimer();
+    console.log('unmounted')
   }
 
   getNewGrid = (size: number) => {
     return new Array(size)
       .fill(null)
-      .map(el => new Array(size).fill(Color.DEFAULT));
+      .map(el => new Array(size).fill(Color.DEFAULT)) as Array<Array<string>>;
   }
 
   getNewUnfilledCells = (size: number) => {
@@ -89,16 +103,13 @@ class Grid extends React.Component<Props> {
   }
 
   timer = () => {
-    // debugger
-
-    console.log('timer before', this.timerId)
+    console.log('timer')
+    debugger
 
     // Фиксация текущих результатов
     this.clearTimer();
-    this.computerScoreIncrement(); // вызовет перерендер
     this.fillSelectedCell(Color.RED);
-
-    console.log('timer after', this.timerId)
+    debugger
 
     // Если победителя пока нет, то игра продолжается
     if (!this.hasWinner()) {
@@ -107,15 +118,16 @@ class Grid extends React.Component<Props> {
       this.startTimer();
     }
 
-    // debugger
+    // Изменение игрового счёта и перерендер
+    this.computerScoreIncrement();
   }
 
   // Функция для обработки кликов
   onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    debugger
 
     // Фиксация текущих результатов
     this.clearTimer();
-    this.playerScoreIncrement(); // вызовет перерендер
     this.fillSelectedCell(Color.GREEN);
 
     // Если победителя пока нет, то игра продолжается
@@ -124,9 +136,14 @@ class Grid extends React.Component<Props> {
       this.fillSelectedCell(Color.BLUE);
       this.startTimer();
     }
+
+    // Изменение игрового счёта и перерендер
+    this.playerScoreIncrement();
   }
 
   startTimer = () => {
+    debugger
+
     const { difficulties, currentMode } = this.props.store;
     const { delay } = difficulties![currentMode!];
     if (delay) {
@@ -139,6 +156,8 @@ class Grid extends React.Component<Props> {
   }
 
   clearTimer = () => {
+    debugger
+
     if (typeof this.timerId === 'number') {
       window.clearTimeout(this.timerId);
       this.timerId = null;
@@ -148,19 +167,35 @@ class Grid extends React.Component<Props> {
   }
 
   selectRandomCell = () => {
+    debugger
+
+    // Если ячейки закончились, то будет null
+    if (!this.unfilledCells.length) {
+      this.cell = null;
+    }
+
     // Выбор случайной ячейки
     const randomIndex = getRandomBetween(0, this.unfilledCells.length);
     this.cell = this.unfilledCells[randomIndex];
+
     // Удаление выбранной ячейки
     this.unfilledCells.splice(randomIndex, 1);
   }
 
   fillSelectedCell = (color: Color) => {
-    const [row, col] = this.cell;
-    this.grid[row][col] = color;
+    debugger
+
+    // Если ячейки закончили, то будет null
+    if (this.cell) {
+      const [row, col] = this.cell;
+      this.grid[row][col] = color;
+      console.log(this.grid[row][col], row, col, color)
+    }
   }
 
   playerScoreIncrement = () => {
+    debugger
+
     type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
     const syncAction: SyncAction = (dispatch, getState) => {
       const newScore = [...getState().score];
@@ -175,6 +210,8 @@ class Grid extends React.Component<Props> {
   }
 
   computerScoreIncrement = () => {
+    debugger
+
     type SyncAction = ThunkAction<void, T.State, undefined, AnyAction>;
     const syncAction: SyncAction = (dispatch, getState) => {
       const newScore = [...getState().score];
@@ -189,6 +226,8 @@ class Grid extends React.Component<Props> {
   }
 
   hasWinner = () => {
+    debugger
+
     const { difficulties, currentMode, playerName, stage } = this.props.store;
     const { field } = difficulties![currentMode!];
     const { score } = this.props.store;
@@ -251,35 +290,16 @@ class Grid extends React.Component<Props> {
 
 
   render() {
+    debugger
 
-    const { difficulties, currentMode, stage } = this.props.store;
+    const { difficulties, currentMode } = this.props.store;
     const { field } = difficulties![currentMode!];
     const size = `${100 / field}%`;
-
-    // Управляющая логика + фукнция обработчика + функция таймера
-    switch (stage) {
-      case GameStage.SETTING:
-        this.clearTimer();
-        break;
-      case GameStage.PLAYING:
-        if (!this.isStarted) {
-          this.selectRandomCell();
-          this.fillSelectedCell(Color.BLUE);
-          this.startTimer();
-          this.isStarted = true;
-        }
-        break;
-      case GameStage.WIN:
-        this.clearTimer();
-        break;
-      default:
-        throw new Error();
-    }
 
     // Рендер
     return (
       <div className='grid'>
-        {(this.grid).map((row, rowIndex) => (
+        {this.grid.map((row, rowIndex) => (
           <div
             key={rowIndex}
             className='container'

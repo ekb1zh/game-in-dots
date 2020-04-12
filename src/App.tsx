@@ -7,7 +7,6 @@ import SelectMode from "./common/components/SelectMode";
 import Button from './common/components/Button';
 import TextField from './common/components/TextField';
 import Message from './common/components/Message';
-import Grid from './common/components/Grid';
 import GridClass from './common/components/GridClass';
 import Winners from './common/components/Winners'
 import { fetchWrapper } from './common/helpers';
@@ -53,7 +52,6 @@ function App() {
         </div>
         <Message />
         {difficulties && currentMode && <GridClass />}
-        {/* {difficulties && currentMode && <Grid />} */}
       </div>
       <div className='container results'>
         <Winners />
