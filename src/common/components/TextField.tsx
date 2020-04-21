@@ -8,8 +8,8 @@ import { Stage } from '../index';
 
 function TextField() {
 
-  const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
-  const stage = useSelector<T.State, T.State['stage']>(state => state.stage);
+  const playerName = useSelector((state: T.State) => state.playerName);
+  const stage = useSelector((state: T.State) => state.stage);
   const dispatch = useDispatch();
   
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {

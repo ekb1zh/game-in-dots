@@ -6,7 +6,7 @@ import * as T from "../types";
 
 function Winners() {
 
-  const winners = useSelector<T.State, T.State['winners']>(state => state.winners);
+  const winners = useSelector((state: T.State) => state.winners);
 
   return (
     <div className='container winners'>

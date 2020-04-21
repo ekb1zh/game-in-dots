@@ -10,9 +10,9 @@ const START_GAME_MODE = 'Pick game mode';
 
 function SelectMode() {
 
-  const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
-  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
-  const stage = useSelector<T.State, T.State['stage']>(state => state.stage);
+  const difficulties = useSelector((state: T.State) => state.difficulties);
+  const currentMode = useSelector((state: T.State) => state.currentMode);
+  const stage = useSelector((state: T.State) => state.stage);
   const dispatch = useDispatch();
 
   const gameModes = [START_GAME_MODE];

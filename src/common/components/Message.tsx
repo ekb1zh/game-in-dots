@@ -7,10 +7,10 @@ import { Stage } from '../index';
 
 function Message() {
 
-  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
-  const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
-  const stage = useSelector<T.State, T.State['stage']>(state => state.stage);
-  const score = useSelector<T.State, T.State['score']>(state => state.score);
+  const currentMode = useSelector((state: T.State) => state.currentMode);
+  const playerName = useSelector((state: T.State) => state.playerName);
+  const stage = useSelector((state: T.State) => state.stage);
+  const score = useSelector((state: T.State) => state.score);
 
   let message = '';
   let colorClass;

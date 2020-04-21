@@ -17,8 +17,8 @@ import { GAME_SETTINGS_URL, GAME_WINNERS_URL } from './common';
 
 function App() {
 
-  const difficulties = useSelector<T.State, T.State['difficulties']>(state => state.difficulties);
-  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
+  const difficulties = useSelector((state: T.State) => state.difficulties);
+  const currentMode = useSelector((state: T.State) => state.currentMode);
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -7,9 +7,9 @@ import { Stage } from '../index';
 
 function Button() {
 
-  const currentMode = useSelector<T.State, T.State['currentMode']>(state => state.currentMode);
-  const playerName = useSelector<T.State, T.State['playerName']>(state => state.playerName);
-  const stage = useSelector<T.State, T.State['stage']>(state => state.stage);
+  const currentMode = useSelector((state: T.State) => state.currentMode);
+  const playerName = useSelector((state: T.State) => state.playerName);
+  const stage = useSelector((state: T.State) => state.stage);
   const dispatch = useDispatch();
 
   function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
