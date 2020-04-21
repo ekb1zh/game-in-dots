@@ -17,6 +17,7 @@ export type Difficulties = {
 }
 
 export type Winner = {
+  id: string
   winner: string
   date: string
 }

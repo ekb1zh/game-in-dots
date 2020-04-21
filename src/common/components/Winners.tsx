@@ -1,20 +1,23 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import * as T from "../types";
 
 
+type Props = Readonly<{
+  winners: T.State['winners']
+}>
 
-function Winners() {
+const Winners: React.FC<Props> = React.memo((props) => {
 
-  const winners = useSelector((state: T.State) => state.winners);
+  const { winners } = props;
 
   return (
     <div className='container winners'>
       <h3>Leader Board</h3>
       {winners && (
         <ul className='stretch'>
-          {[...winners].reverse().map(({ winner, date }, index, arr) => (
-            <li key={index} className='container'>
+          {[...winners].reverse().map(({ winner, date, id }) => (
+            <li key={id} className='container'>
               <span>{winner}</span>
               <span>{date}</span>
             </li>
@@ -23,6 +26,8 @@ function Winners() {
       )}
     </div>
   );
-}
+});
 
-export default Winners;
+export default connect(
+  (state: T.State) => ({ winners: state.winners }),
+)(Winners);
