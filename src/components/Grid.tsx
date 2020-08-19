@@ -5,7 +5,7 @@ import { ThunkAction } from 'redux-thunk';
 import { Action } from '../redux';
 import * as T from "../types";
 import { fetchWrapper, getRandomBetween } from '../helpers';
-import { GAME_WINNERS_URL, Stage, Color } from '../index';
+import { GAME_WINNERS_URL, Stage, Color } from '../common-info';
 
 
 type Props = Readonly<{

@@ -1,4 +1,4 @@
-import { Stage } from './index'
+import { Stage } from '../common-info'
 
 export type State = {
   difficulties: Difficulties | null

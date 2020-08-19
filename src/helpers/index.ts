@@ -9,7 +9,6 @@ export const fetchWrapper: typeof fetch = function (url, options) {
 
 // This JavaScript function always returns a random number
 // between min (included) and max (excluded)
-// https://www.w3schools.com/js/js_random.asp
 export function getRandomBetween(from: number, to: number) {
   return Math.floor(Math.random() * (to - from)) + from;
 }

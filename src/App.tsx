@@ -2,16 +2,16 @@ import React, { useEffect } from 'react';
 import { AnyAction } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkAction } from 'redux-thunk';
-import { Action } from './common/redux';
-import SelectMode from "./common/components/SelectMode";
-import Button from './common/components/Button';
-import TextField from './common/components/TextField';
-import Message from './common/components/Message';
-import Grid from './common/components/Grid';
-import Winners from './common/components/Winners'
-import { fetchWrapper } from './common/helpers';
-import * as T from './common/types';
-import { GAME_SETTINGS_URL, GAME_WINNERS_URL } from './common';
+import { Action } from './redux';
+import SelectMode from "./components/SelectMode";
+import Button from './components/Button';
+import TextField from './components/TextField';
+import Message from './components/Message';
+import Grid from './components/Grid';
+import Winners from './components/Winners'
+import { fetchWrapper } from './helpers';
+import * as T from './types';
+import { GAME_SETTINGS_URL, GAME_WINNERS_URL } from './common-info';
 
 
 
