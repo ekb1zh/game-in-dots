@@ -1,0 +1,43 @@
+.winners {
+  width: 100%;
+}
+
+.winners>h3 {
+  font-size: 2rem;
+  font-weight: 500;
+  color: #888888;
+  padding: 0.7em 0;
+}
+
+.winners>ul>li {
+  font-size: 1.2rem;
+  font-weight: 500;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #cfd8dc;
+  padding: 0.7em 1em;
+  color: #9ea7aa;
+  margin-top: 0.1em;
+}
+
+.winners>ul>li:first-child {
+  margin-top: 0;
+}
+
+@media(min-aspect-ratio: 1/1) {
+  .winners {
+    width: 50%;
+    height: 100%;
+    padding: 1em 5em;
+  }
+
+  .winners>h3 {
+    align-items: flex-start;
+  }
+
+  .winners>ul {
+    justify-content: flex-start;
+    height: 50%;
+    overflow: auto;
+  }
+}

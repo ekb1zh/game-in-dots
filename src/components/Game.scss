@@ -1,0 +1,48 @@
+.game {
+  justify-content: flex-start;
+  width: 100%;
+  height: 50%;
+}
+
+.controls {
+  height: 10em;
+}
+
+.controls>* {
+  margin: 0;
+  margin-top: 0.5em;
+  border: solid transparent 1px;
+  border-radius: 0.3em;
+  height: 100%;
+}
+
+.controls>*:first-child {
+  margin-top: 0;
+}
+
+
+@media(min-aspect-ratio: 1/1) {
+  .game {
+    justify-content: center;
+    width: 50%;
+    padding: 2em;
+  }
+
+  .controls {
+    flex-direction: row;
+    height: 3em;
+  }
+
+  .controls>* {
+    margin: 0;
+    margin-left: 0.5em;
+  }
+
+  .controls>*:hover {
+    box-shadow: 0px 0px 10px 2px rgba(235,235,235,1);
+  }
+
+  .controls>*:first-child {
+    margin-left: 0;
+  }
+}

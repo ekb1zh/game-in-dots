@@ -1,0 +1,11 @@
+.play-button {
+  background-color: #7a8d93;
+  color: white;
+  font-weight: 500;
+}
+
+@media(min-aspect-ratio: 1/1) {
+  .play-button {
+    flex: 1 0 23%;
+  }
+}

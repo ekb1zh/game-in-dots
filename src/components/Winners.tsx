@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as T from "../types";
+import './Winners.scss';
+
 
 
 type Props = Readonly<{
@@ -12,16 +14,16 @@ const Winners: React.FC<Props> = React.memo((props) => {
   const { winners } = props;
 
   return (
-    <div className='container winners'>
+    <div className='winners'>
       <h3>Leader Board</h3>
       {winners && (
-        <ul className='stretch'>
-          {[...winners].reverse().map(({ winner, date, id }) => (
-            <li key={id} className='container'>
+        <ul>
+          {winners.map(({ winner, date, id }) => (
+            <li key={id}>
               <span>{winner}</span>
               <span>{date}</span>
             </li>
-          ))}
+          )).reverse()}
         </ul>
       )}
     </div>

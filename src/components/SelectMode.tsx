@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Action } from '../redux';
 import * as T from "../types";
 import { Stage } from '../common-info';
+import './SelectMode.scss';
 
 
 const START_GAME_MODE = 'Pick game mode';
@@ -30,7 +31,7 @@ function SelectMode() {
 
   return (
     <select
-      className='select'
+      className='select-mode'
       value={currentMode || START_GAME_MODE}
       onChange={onChange}
       disabled={stage !== Stage.SETTING}

@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import * as T from "../types";
 import { Stage } from '../common-info';
+import './Message.scss';
 
 
 
@@ -13,7 +14,8 @@ function Message() {
   const score = useSelector((state: T.State) => state.score);
 
   let message = '';
-  let colorClass;
+  let color = '#888888';
+
   switch (stage) {
 
     case Stage.SETTING: {
@@ -32,15 +34,12 @@ function Message() {
         message += 'enter your name'
       }
 
-      if(!message) {
+      if (!message) {
         message += 'push PLAY button, and good luck :-)'
       }
 
-      if (message) {
-        message = `Please, ${message}`
-      }
-
-      colorClass = ' message--setting';
+      message = `Please, ${message}`
+      color = 'sandybrown';
 
       break;
     }
@@ -53,7 +52,7 @@ function Message() {
 
     case Stage.WIN: {
       const [player, computer] = score;
-      message = `Game over. \nScore: ${player} : ${computer}. ${player > computer ? 'You are win!' : 'Computer win.'} \nPlease, play again :-)`
+      message = `Game over. Score: ${player} : ${computer}. ${player > computer ? 'You are win!' : 'Computer win.'} \nPlease, play again :-)`
       break;
     }
 
@@ -62,7 +61,7 @@ function Message() {
   }
 
   return message ? (
-    <p className={`message${colorClass ? colorClass : ''}`}>
+    <p className="message" style={{ color }}>
       {message}
     </p>
   ) : null;

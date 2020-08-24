@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Action } from '../redux';
 import * as T from "../types";
 import { Stage } from '../common-info';
+import './TextField.scss';
 
 
 
@@ -21,7 +22,7 @@ function TextField() {
 
   return (
     <input
-      className='field'
+      className='text-field'
       type='text'
       value={playerName || ''}
       placeholder='Enter your name'

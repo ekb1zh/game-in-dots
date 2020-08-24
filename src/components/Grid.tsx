@@ -6,6 +6,7 @@ import { Action } from '../redux';
 import * as T from "../types";
 import { fetchWrapper, getRandomBetween } from '../helpers';
 import { GAME_WINNERS_URL, Stage, Color } from '../common-info';
+import './Grid.scss';
 
 
 type Props = Readonly<{
@@ -261,32 +262,35 @@ class Grid extends React.Component<Props> {
 
     // Рендер
     return (
-      <div className='grid'>
-        {this.grid.map((row, rowIndex) => (
-          <div
-            key={rowIndex}
-            className='container'
-            style={{
-              height: size,
-              width: '100%',
-              border: 'solid whitesmoke 1px'
-            }}
-          >
-            {row.map((color, colorIndex) => (
-              <div
-                key={colorIndex}
-                onClick={color === Color.BLUE ? this.onClick : null!}
-                style={{
-                  height: '100%',
-                  width: size,
-                  backgroundColor: color,
-                  border: 'solid whitesmoke 1px'
-                }}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+      <table className='table'>
+        <tbody>
+          {this.grid.map((row, rowIndex) => (
+            <tr
+              key={rowIndex}
+              // className=''
+              // style={{
+              //   height: size,
+              //   width: '100%',
+              //   border: 'solid whitesmoke 1px'
+              // }}
+            >
+              {row.map((color, colorIndex) => (
+                <td
+                  key={colorIndex}
+                  onClick={color === Color.BLUE ? this.onClick : null!}
+                  className='cell'
+                  style={{
+                    // height: '100%',
+                    // width: size,
+                    backgroundColor: color,
+                    // border: 'solid whitesmoke 1px'
+                  }}
+                />
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     );
   }
 }

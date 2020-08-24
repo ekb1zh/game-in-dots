@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap');
+
+:root {
+  box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  outline: none;
+}
+
+body {
+  font-size: 1.1rem;
+  font-family: 'Ubuntu', sans-serif;
+  padding: 1em;
+}
+
+
+// Mobile first
+
+$border: solid 2px #eeeef0;
+
+.separator {
+  height: 0;
+  border-top: $border;
+}
+
+@media(min-aspect-ratio: 1/1) {
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    padding: 1em;
+  }
+
+  .container {
+    flex-direction: row;
+    height: 100%;
+    border: $border;
+  }
+
+  .separator {
+    height: 100%;
+    width: 0;
+    border-left: $border;
+  }
+}

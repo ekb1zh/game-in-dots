@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Action } from '../redux';
 import * as T from "../types";
 import { Stage } from '../common-info';
+import './PlayButton.scss';
 
 
 function Button() {
@@ -62,9 +63,10 @@ function Button() {
 
   return (
     <button
-      className='button'
+      className='play-button'
       onClick={onClick}
       disabled={isDisabled}
+      style={{ opacity: isDisabled ? 0.1 : 1 }}
     >
       {label}
     </button>
