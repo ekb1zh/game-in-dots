@@ -9,7 +9,7 @@
   padding: 0.7em 0;
 }
 
-.winners>ul>li {
+.winners li {
   font-size: 1.2rem;
   font-weight: 500;
   flex-direction: row;
@@ -20,7 +20,7 @@
   margin-top: 0.1em;
 }
 
-.winners>ul>li:first-child {
+.winners li:first-child {
   margin-top: 0;
 }
 
