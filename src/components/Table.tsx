@@ -6,7 +6,7 @@ import { Action } from '../redux';
 import * as T from "../types";
 import { fetchWrapper, getRandomBetween } from '../helpers';
 import { GAME_WINNERS_URL, Stage, Color } from '../common-info';
-import './Grid.scss';
+import './Table.scss';
 
 
 type Props = Readonly<{
@@ -14,13 +14,13 @@ type Props = Readonly<{
   dispatch: any
 }>
 
-class Grid extends React.Component<Props> {
+class Table extends React.Component<Props> {
 
   private scoreLocal: T.Score;
   private timerId: number | null;
   private cell: T.Coordinate | null;
   private isStarted: boolean;
-  private grid: T.Grid;
+  private table: T.Table;
   private coordinates: Array<T.Coordinate>;
 
   constructor(readonly props: Props) {
@@ -35,7 +35,7 @@ class Grid extends React.Component<Props> {
     this.scoreLocal = [0, 0];
     this.isStarted = false;
 
-    this.grid = this.newGrid(field);
+    this.table = this.newTable(field);
     this.coordinates = this.newCoordinates(field);
   }
 
@@ -49,7 +49,7 @@ class Grid extends React.Component<Props> {
 
     // Если размеры сетки изменились, обновить сетку
     if (!isFieldsEquals) {
-      this.grid = this.newGrid(field);
+      this.table = this.newTable(field);
       this.coordinates = this.newCoordinates(field);
     }
 
@@ -70,7 +70,7 @@ class Grid extends React.Component<Props> {
     this.clearTimer();
   }
 
-  newGrid = (size: number) => {
+  newTable = (size: number) => {
     return new Array(size)
       .fill(null)
       .map(el => new Array(size).fill(Color.DEFAULT)) as Array<Array<string>>;
@@ -125,7 +125,6 @@ class Grid extends React.Component<Props> {
       this.selectRandomCell();
       this.fillSelectedCell(Color.BLUE);
       this.startTimer();
-      // this.forceUpdate();
     }
 
     // Отправка локального игрового счёта в redux
@@ -171,7 +170,7 @@ class Grid extends React.Component<Props> {
     // Если ячейки закончились, то будет null
     if (this.cell) {
       const [row, col] = this.cell;
-      this.grid[row][col] = color;
+      this.table[row][col] = color;
     }
   }
 
@@ -256,35 +255,16 @@ class Grid extends React.Component<Props> {
   }
 
   render() {
-    const { difficulties, currentMode } = this.props.store;
-    const { field } = difficulties![currentMode!];
-    const size = `${100 / field}%`;
-
-    // Рендер
     return (
       <table className='table'>
         <tbody>
-          {this.grid.map((row, rowIndex) => (
-            <tr
-              key={rowIndex}
-              // className=''
-              // style={{
-              //   height: size,
-              //   width: '100%',
-              //   border: 'solid whitesmoke 1px'
-              // }}
-            >
+          {this.table.map((row, rowIndex) => (
+            <tr key={rowIndex}>
               {row.map((color, colorIndex) => (
                 <td
                   key={colorIndex}
                   onClick={color === Color.BLUE ? this.onClick : null!}
-                  className='cell'
-                  style={{
-                    // height: '100%',
-                    // width: size,
-                    backgroundColor: color,
-                    // border: 'solid whitesmoke 1px'
-                  }}
+                  style={{ backgroundColor: color }}
                 />
               ))}
             </tr>
@@ -298,4 +278,4 @@ class Grid extends React.Component<Props> {
 export default connect(
   state => ({ store: state }),
   dispatch => ({ dispatch }),
-)(Grid as any);
+)(Table as any);

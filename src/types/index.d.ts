@@ -24,6 +24,6 @@ export type Winner = {
 
 export type Coordinate = [number, number];
 
-export type Grid = Array<Array<string>>;
+export type Table = Array<Array<string>>;
 
 export type Score = [number, number]; // [player, computer]

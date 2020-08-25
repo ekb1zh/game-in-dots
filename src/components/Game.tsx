@@ -4,7 +4,7 @@ import SelectMode from "./SelectMode";
 import Button from './PlayButton';
 import TextField from './TextField';
 import Message from './Message';
-import Grid from './Grid';
+import Table from './Table';
 import * as T from '../types';
 import './Game.scss';
 
@@ -22,7 +22,7 @@ function Game() {
         <Button />
       </div>
       <Message />
-      {difficulties && currentMode && <Grid />}
+      {difficulties && currentMode && <Table />}
     </div>
   );
 }
