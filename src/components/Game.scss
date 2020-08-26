@@ -5,6 +5,7 @@
 }
 
 .controls {
+  font-size: 1.1em;
   height: 10em;
 }
 
@@ -21,7 +22,7 @@
 }
 
 
-@media(min-aspect-ratio: 1/1) {
+@media(orientation: landscape) {
   .game {
     justify-content: center;
     width: 50%;
@@ -29,6 +30,7 @@
   }
 
   .controls {
+    font-size: 1.2em;
     flex-direction: row;
     height: 3em;
   }

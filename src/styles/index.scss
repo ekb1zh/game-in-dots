@@ -15,7 +15,7 @@
 }
 
 body {
-  font-size: 1.1rem;
+  font-size: calc(1vw + 1rem);
   font-family: 'Ubuntu', sans-serif;
   padding: 1em;
 }
@@ -26,10 +26,17 @@ body {
 $border: solid 2px #eeeef0;
 
 .separator {
+  display: flex;
+  height: 0;
+  width: 100%;
+  border-bottom: $border;
+}
+
+.hidden {
   display: none;
 }
 
-@media(min-aspect-ratio: 1/1) {
+@media(orientation: landscape) {
 
   html,
   body {
@@ -37,9 +44,8 @@ $border: solid 2px #eeeef0;
   }
 
   body {
-    padding: 1em;
+    font-size: calc(1vh + 0.5rem);
   }
-
   .container {
     flex-direction: row;
     height: 100%;

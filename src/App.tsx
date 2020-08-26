@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AnyAction } from 'redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ThunkAction } from 'redux-thunk';
 import { Action } from './redux';
 import Game from './components/Game';
@@ -12,6 +12,9 @@ import { GAME_SETTINGS_URL, GAME_WINNERS_URL } from './common-info';
 
 
 function App() {
+
+  const difficulties = useSelector((state: T.State) => state.difficulties);
+  const currentMode = useSelector((state: T.State) => state.currentMode);
 
   const dispatch = useDispatch();
 
@@ -39,7 +42,7 @@ function App() {
   return (
     <>
       <Game />
-      <div className="separator" />
+      <div className={`separator${difficulties && currentMode ? ' hidden' : ''}`} />
       <Winners />
     </>
   );

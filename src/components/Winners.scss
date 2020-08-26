@@ -3,14 +3,14 @@
 }
 
 .winners>h3 {
-  font-size: 2rem;
+  font-size: 1.8em;
   font-weight: 500;
   color: #888888;
   padding: 0.7em 0;
 }
 
 .winners li {
-  font-size: 1.2rem;
+  font-size: 1.1em;
   font-weight: 500;
   flex-direction: row;
   justify-content: space-between;
@@ -24,20 +24,22 @@
   margin-top: 0;
 }
 
-@media(min-aspect-ratio: 1/1) {
+@media(orientation: landscape) {
   .winners {
     width: 50%;
     height: 100%;
-    padding: 1em 5em;
+    padding: 0 3.5em;
   }
 
   .winners>h3 {
     align-items: flex-start;
+    padding: 0;
+    padding-bottom: 0.7em;
   }
 
   .winners>ul {
     justify-content: flex-start;
-    height: 50%;
+    height: 20em;
     overflow: auto;
   }
 }
