@@ -6,6 +6,6 @@
 
 @media(orientation: landscape) {
   .play-button {
-    flex: 1 0 23%;
+    max-width: 10em;
   }
 }

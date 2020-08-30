@@ -12,8 +12,10 @@
 .winners li {
   font-size: 1.1em;
   font-weight: 500;
-  flex-direction: row;
+  display: flex;
   justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
   background-color: #cfd8dc;
   padding: 0.7em 1em;
   color: #9ea7aa;
