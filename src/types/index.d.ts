@@ -1,4 +1,4 @@
-import { Stage } from '../common-info'
+import { Stage } from '../constants'
 
 export type State = {
   difficulties: Difficulties | null

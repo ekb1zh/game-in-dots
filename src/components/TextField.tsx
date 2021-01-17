@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Action } from "../redux";
 import * as T from "../types";
-import { Stage } from "../common-info";
+import { Stage } from "../constants";
 import "./TextField.scss";
 
 function TextField() {

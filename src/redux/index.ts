@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, Reducer, AnyAction } from "redux";
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import * as T from "../types";
-import { Stage } from '../common-info';
+import { Stage } from '../constants';
 
 
 // Actions

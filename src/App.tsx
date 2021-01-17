@@ -7,7 +7,7 @@ import Game from './components/Game';
 import Winners from './components/Winners'
 import { fetchWrapper } from './helpers';
 import * as T from './types';
-import { GAME_SETTINGS_URL, GAME_WINNERS_URL } from './common-info';
+import { GAME_SETTINGS_URL, GAME_WINNERS_URL } from './constants';
 
 
 

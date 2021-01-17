@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import * as T from "../types";
-import { Stage } from "../common-info";
+import { Stage } from "../constants";
 import "./Message.scss";
 
 function Message() {
