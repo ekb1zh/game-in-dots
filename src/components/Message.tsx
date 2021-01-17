@@ -1,8 +1,8 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import * as T from "../types";
-import { Stage } from "../constants";
-import "./Message.scss";
+import React from 'react'
+import { useSelector } from 'react-redux'
+import * as T from '../types'
+import { Stage } from '../constants'
+import './Message.scss'
 
 function Message() {
   const { currentMode, playerName, stage, score } = useSelector(
@@ -11,62 +11,62 @@ function Message() {
       playerName,
       stage,
       score,
-    })
-  );
+    }),
+  )
 
-  let message = "";
-  let color = "#888888";
+  let message = ''
+  let color = '#888888'
 
   switch (stage) {
     case Stage.SETTING: {
-      const isStartGameMode = !currentMode;
-      const isAbsentPlayerName = !playerName;
+      const isStartGameMode = !currentMode
+      const isAbsentPlayerName = !playerName
 
       if (isStartGameMode) {
-        message += "pick game mode";
+        message += 'pick game mode'
       }
 
       if (isStartGameMode && isAbsentPlayerName) {
-        message += " and ";
+        message += ' and '
       }
 
       if (isAbsentPlayerName) {
-        message += "enter your name";
+        message += 'enter your name'
       }
 
       if (!message) {
-        message += "push PLAY button, and good luck :-)";
+        message += 'push PLAY button, and good luck :-)'
       }
 
-      message = `Please, ${message}`;
-      color = "sandybrown";
+      message = `Please, ${message}`
+      color = 'sandybrown'
 
-      break;
+      break
     }
 
     case Stage.PLAYING: {
-      const [player, computer] = score;
-      message = `Score: You ${player} : ${computer} "computer"`;
-      break;
+      const [player, computer] = score
+      message = `Score: You ${player} : ${computer} "computer"`
+      break
     }
 
     case Stage.WIN: {
-      const [player, computer] = score;
+      const [player, computer] = score
       message = `Game over. Score: ${player} : ${computer}. ${
-        player > computer ? "You are win!" : "Computer win."
-      } \nPlease, play again :-)`;
-      break;
+        player > computer ? 'You are win!' : 'Computer win.'
+      } \nPlease, play again :-)`
+      break
     }
 
     default:
-      throw new Error();
+      throw new Error()
   }
 
   return message ? (
-    <p className="message" style={{ color }}>
+    <p className='message' style={{ color }}>
       {message}
     </p>
-  ) : null;
+  ) : null
 }
 
-export default Message;
+export default Message

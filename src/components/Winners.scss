@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-.winners>h3 {
+.winners > h3 {
   font-size: 1.8em;
   font-weight: 500;
   color: #888888;
@@ -26,22 +26,22 @@
   margin-top: 0;
 }
 
-@media(orientation: landscape) {
+@media (orientation: landscape) {
   .winners {
     width: 50%;
     height: 100%;
     padding: 1em 3.5em;
   }
 
-  .winners>h3 {
+  .winners > h3 {
     align-items: flex-start;
     padding: 0;
-    padding-bottom: 0.7em;
   }
 
-  .winners>ul {
+  .winners > ul {
     justify-content: flex-start;
     height: 20em;
     overflow: auto;
+    margin-top: 0.7em;
   }
 }

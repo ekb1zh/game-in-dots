@@ -18,7 +18,6 @@ body {
   padding: 1em;
 }
 
-
 /* Mobile first */
 
 $border: solid 2px #eeeef0;
@@ -33,8 +32,7 @@ $border: solid 2px #eeeef0;
   display: none;
 }
 
-@media(orientation: landscape) {
-
+@media (orientation: landscape) {
   html,
   body {
     height: 100%;
