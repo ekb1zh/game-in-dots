@@ -1,23 +1,24 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Action } from '../redux';
+import { Action } from "../redux";
 import * as T from "../types";
-import { Stage } from '../common-info';
-import './SelectMode.scss';
+import { Stage } from "../common-info";
+import "./SelectMode.scss";
 
-
-const START_GAME_MODE = 'Pick game mode';
-
+const START_GAME_MODE = "Pick game mode";
 
 function SelectMode() {
-
-  const difficulties = useSelector((state: T.State) => state.difficulties);
-  const currentMode = useSelector((state: T.State) => state.currentMode);
-  const stage = useSelector((state: T.State) => state.stage);
+  const { difficulties, currentMode, stage } = useSelector(
+    ({ difficulties, currentMode, stage }: T.State) => ({
+      difficulties,
+      currentMode,
+      stage,
+    })
+  );
   const dispatch = useDispatch();
 
   const gameModes = [START_GAME_MODE];
-  if(difficulties) {
+  if (difficulties) {
     gameModes.push(...Object.keys(difficulties));
   }
 
@@ -31,16 +32,16 @@ function SelectMode() {
 
   return (
     <select
-      className='select-mode'
+      className="select-mode"
       value={currentMode || START_GAME_MODE}
       onChange={onChange}
       disabled={stage !== Stage.SETTING}
     >
-      {gameModes.map(key => (
+      {gameModes.map((key) => (
         <option key={key} value={key}>
           {key}
-        </option>)
-      )}
+        </option>
+      ))}
     </select>
   );
 }

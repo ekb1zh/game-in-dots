@@ -1,58 +1,60 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 import * as T from "../types";
-import { Stage } from '../common-info';
-import './Message.scss';
-
-
+import { Stage } from "../common-info";
+import "./Message.scss";
 
 function Message() {
+  const { currentMode, playerName, stage, score } = useSelector(
+    ({ currentMode, playerName, stage, score }: T.State) => ({
+      currentMode,
+      playerName,
+      stage,
+      score,
+    })
+  );
 
-  const currentMode = useSelector((state: T.State) => state.currentMode);
-  const playerName = useSelector((state: T.State) => state.playerName);
-  const stage = useSelector((state: T.State) => state.stage);
-  const score = useSelector((state: T.State) => state.score);
-
-  let message = '';
-  let color = '#888888';
+  let message = "";
+  let color = "#888888";
 
   switch (stage) {
-
     case Stage.SETTING: {
       const isStartGameMode = !currentMode;
       const isAbsentPlayerName = !playerName;
 
       if (isStartGameMode) {
-        message += 'pick game mode'
+        message += "pick game mode";
       }
 
       if (isStartGameMode && isAbsentPlayerName) {
-        message += ' and ';
+        message += " and ";
       }
 
       if (isAbsentPlayerName) {
-        message += 'enter your name'
+        message += "enter your name";
       }
 
       if (!message) {
-        message += 'push PLAY button, and good luck :-)'
+        message += "push PLAY button, and good luck :-)";
       }
 
-      message = `Please, ${message}`
-      color = 'sandybrown';
+      message = `Please, ${message}`;
+      color = "sandybrown";
 
       break;
     }
 
     case Stage.PLAYING: {
       const [player, computer] = score;
-      message = `Score: You ${player} : ${computer} "computer"`
+      message = `Score: You ${player} : ${computer} "computer"`;
       break;
     }
 
     case Stage.WIN: {
       const [player, computer] = score;
-      message = `Game over. Score: ${player} : ${computer}. ${player > computer ? 'You are win!' : 'Computer win.'} \nPlease, play again :-)`
+      message = `Game over. Score: ${player} : ${computer}. ${
+        player > computer ? "You are win!" : "Computer win."
+      } \nPlease, play again :-)`;
       break;
     }
 

@@ -1,22 +1,22 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Action } from '../redux';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Action } from "../redux";
 import * as T from "../types";
-import { Stage } from '../common-info';
-import './PlayButton.scss';
-
+import { Stage } from "../common-info";
+import "./PlayButton.scss";
 
 function Button() {
-
-  const currentMode = useSelector((state: T.State) => state.currentMode);
-  const playerName = useSelector((state: T.State) => state.playerName);
-  const stage = useSelector((state: T.State) => state.stage);
+  const { currentMode, playerName, stage } = useSelector(
+    ({ currentMode, playerName, stage }: T.State) => ({
+      currentMode,
+      playerName,
+      stage,
+    })
+  );
   const dispatch = useDispatch();
 
   function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-
     switch (stage) {
-
       case Stage.SETTING:
         dispatch({
           type: Action.SET_STAGE,
@@ -43,7 +43,6 @@ function Button() {
       default:
         throw new Error();
     }
-
   }
 
   const isDisabled = !playerName || !currentMode;
@@ -51,11 +50,11 @@ function Button() {
   let label;
   switch (stage) {
     case Stage.SETTING:
-      label = 'PLAY';
+      label = "PLAY";
       break;
     case Stage.PLAYING:
     case Stage.WIN:
-      label = 'PLAY AGAIN';
+      label = "PLAY AGAIN";
       break;
     default:
       throw new Error();
@@ -63,7 +62,7 @@ function Button() {
 
   return (
     <button
-      className='play-button'
+      className="play-button"
       onClick={onClick}
       disabled={isDisabled}
       style={{ opacity: isDisabled ? 0.1 : 1 }}
