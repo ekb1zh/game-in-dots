@@ -1,5 +1,6 @@
-export const fetchWrapper: typeof fetch = function (url, options) {
-  return fetch.apply(null, arguments as unknown as Parameters<typeof fetch>)
+export const fetchWrapper: typeof fetch = function () {
+  const args = arguments as any as Parameters<typeof fetch>
+  return fetch.apply(null, args)
     .then(res => {
       if (res.ok) return res.json()
     })
