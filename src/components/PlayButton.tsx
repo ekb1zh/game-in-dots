@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Action } from "../redux";
+import { ActionType } from "../redux";
 import * as T from "../types";
 import { Stage } from "../constants";
 import "./PlayButton.scss";
@@ -19,7 +19,7 @@ function Button() {
     switch (stage) {
       case Stage.SETTING:
         dispatch({
-          type: Action.SET_STAGE,
+          type: ActionType.SET_STAGE,
           payload: Stage.PLAYING,
         });
         break;
@@ -27,15 +27,15 @@ function Button() {
       case Stage.PLAYING:
       case Stage.WIN:
         dispatch({
-          type: Action.SET_CURRENT_MODE,
+          type: ActionType.SET_CURRENT_MODE,
           payload: null,
         });
         dispatch({
-          type: Action.SET_SCORE,
+          type: ActionType.SET_SCORE,
           payload: [0, 0],
         });
         dispatch({
-          type: Action.SET_STAGE,
+          type: ActionType.SET_STAGE,
           payload: Stage.SETTING,
         });
         break;

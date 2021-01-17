@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import * as T from "../types";
 import './Winners.scss';
 
-
-
 type Props = Readonly<{
   winners: T.State['winners']
 }>

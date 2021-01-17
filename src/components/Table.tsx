@@ -2,7 +2,7 @@ import React from 'react';
 import { AnyAction } from 'redux';
 import { connect } from 'react-redux';
 import { ThunkAction } from 'redux-thunk';
-import { Action } from '../redux';
+import { ActionType } from '../redux';
 import * as T from "../types";
 import { fetchWrapper, getRandomBetween } from '../helpers';
 import { GAME_WINNERS_URL, Stage, Color } from '../constants';
@@ -184,7 +184,7 @@ class Table extends React.Component<Props> {
 
   dispatchScore = () => {
     this.props.dispatch({
-      type: Action.SET_SCORE,
+      type: ActionType.SET_SCORE,
       payload: [...this.scoreLocal],
     })
   }
@@ -239,7 +239,7 @@ class Table extends React.Component<Props> {
 
       fetchWrapper(GAME_WINNERS_URL, params)
         .then(res => dispatch({
-          type: Action.SET_WINNERS,
+          type: ActionType.SET_WINNERS,
           payload: res
         }));
     }
@@ -249,7 +249,7 @@ class Table extends React.Component<Props> {
 
   dispatchStageWin = () => {
     this.props.dispatch({
-      type: Action.SET_STAGE,
+      type: ActionType.SET_STAGE,
       payload: Stage.WIN,
     });
   }

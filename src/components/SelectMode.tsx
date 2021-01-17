@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Action } from "../redux";
+import { ActionType } from "../redux";
 import * as T from "../types";
 import { Stage } from "../constants";
 import "./SelectMode.scss";
@@ -25,7 +25,7 @@ function SelectMode() {
   function onChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const { value } = event.target;
     dispatch({
-      type: Action.SET_CURRENT_MODE,
+      type: ActionType.SET_CURRENT_MODE,
       payload: value === START_GAME_MODE ? null : value,
     });
   }

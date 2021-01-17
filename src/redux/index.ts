@@ -5,8 +5,8 @@ import * as T from "../types";
 import { Stage } from '../constants';
 
 
-// Actions
-export enum Action {
+// Action type
+export enum ActionType {
   SET_DIFFICULTIES = 'SET_DIFFICULTIES',
   SET_CURRENT_MODE = 'SET_CURRENT_MODE',
   SET_PLAYER_NAME = 'SET_PLAYER_NAME',
@@ -33,37 +33,37 @@ const reducer: Reducer<T.State, AnyAction & { payload: any }> =
 
     switch (action.type) {
 
-      case Action.SET_DIFFICULTIES:
+      case ActionType.SET_DIFFICULTIES:
         return {
           ...state,
           difficulties: action.payload
         };
 
-      case Action.SET_CURRENT_MODE:
+      case ActionType.SET_CURRENT_MODE:
         return {
           ...state,
           currentMode: action.payload
         };
 
-      case Action.SET_PLAYER_NAME:
+      case ActionType.SET_PLAYER_NAME:
         return {
           ...state,
           playerName: action.payload
         };
 
-      case Action.SET_WINNERS:
+      case ActionType.SET_WINNERS:
         return {
           ...state,
           winners: action.payload
         };
 
-      case Action.SET_SCORE:
+      case ActionType.SET_SCORE:
         return {
           ...state,
           score: action.payload
         };
 
-      case Action.SET_STAGE:
+      case ActionType.SET_STAGE:
         return {
           ...state,
           stage: action.payload
